@@ -1,6 +1,9 @@
 from pysics.force import Force
 from pysics import pysics
 
+from pysics.errors import MassOfZeroError
+from pysics.errors import NameUsedError
+
 class PhysicsObject():
     """Represents an object in space that will react as forces are applied on it over ticks.
     Acceleration is only calculated when the object moves (at the beginning of each tick).
@@ -49,14 +52,14 @@ class PhysicsObject():
         self.calculate_accel()
         if pysics.game_mode: #Gamer mode (not scientific)
             #x = x(initial) + v(initial)(t) + 1/2(a)(t) - on a single axis
-            self.xpos =+ self.xvel*tick_length + (1/2)*(self.xaccel)*(tick_length)
-            self.ypos =+ self.yvel*tick_length + (1/2)*(self.yaccel)*(tick_length)
-            self.zpos =+ self.zvel*tick_length + (1/2)*(self.zaccel)*(tick_length)
+            self.xpos += self.xvel*tick_length + (1/2)*(self.xaccel)*(tick_length)
+            self.ypos += self.yvel*tick_length + (1/2)*(self.yaccel)*(tick_length)
+            self.zpos += self.zvel*tick_length + (1/2)*(self.zaccel)*(tick_length)
 
             #v = v(initial) + (a)(t) - on a single axis
-            self.xvel =+ (self.xaccel)*(tick_length)
-            self.yvel =+ (self.yaccel)*(tick_length)
-            self.zvel =+ (self.zaccel)*(tick_length)
+            self.xvel += (self.xaccel)*(tick_length)
+            self.yvel += (self.yaccel)*(tick_length)
+            self.zvel += (self.zaccel)*(tick_length)
 
             #acceleration does not change until the net force changes
 
@@ -77,10 +80,18 @@ class PhysicsObject():
         self.zaccel /= self.mass
         return (self.xaccel, self.yaccel, self.zaccel)
 
-    def apply_force(self, force) -> Force:
+    def apply_force(self, new_force):
         """Applies another force on this object. Acceleration is NOT recalculated here."""
-        self.forces.append(force)
+        for force in self.forces: #Make sure its name is not already used
+            if force.name == new_force.name:
+                raise NameUsedError("You cannot use the same name twice for a force on the same object.")
 
-    def remove_force(self, force) -> Force:
+        self.forces.append(new_force)
+
+    def remove_force(self, force):
         forces.remove(force)
+
+    def clear_forces(self):
+        """Remove all the forces acting on this object"""
+        self.forces.clear()
 

@@ -1,5 +1,7 @@
+from pysics.errors import MassOfZeroError
 
 class Force():
+    """A force"""
     #If you wish to only to 2 dimentional motion, ignore oneof the dimensions
     
     # In newtons
@@ -22,13 +24,20 @@ class Force():
 
     name = "force"
 
-    def __init__(self, name, x=0, y=0, z=0, force_type=0, g=0.80665):
+    def __init__(self, name, x=0, y=0, z=0, force_type=0, g=0, parent_mass=0):
         """Create a force with the given name and horizontal and vertical forces in newtons. 
         Each dimension defaults to 0 so you only have to deal with what you want. force_type defaults to 0 to simply add an applied force.
-        The gravitational constant is different for every force and defaults to the configured value."""
+        The gravitational constant is different for every force and defaults to 0.
+        If you wish to have a specific gravitational acceleration for a gravitational force, supply g instead of vertical force and the
+        object's mass (parent_mass). The vertical force will be calculated from them. Forces created this way cannot be used by two different objects."""
         self.name = name
+        self.g = g
         self.x = x
-        self.y = y
+        if g != 0: #Gravitational acceleration supplied
+            if parent_mass == 0:
+                raise MassOfZeroError("Parent mass cannot be 0")
+            self.y += -g*parent_mass #g needs to be negative in this calculation because it goes down
+        else: #Gravitational acceleration not supplied
+            self.y = y
         self.z = z
         self.force_type = force_type
-        self.g = g

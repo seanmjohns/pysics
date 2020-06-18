@@ -23,7 +23,7 @@ class PhysicsManager():
         """Make a single physics tick pass for all objects in this universe.
         This is not recommended if you are creating a game. In the case of game creation, you should tick each object manually."""
         for obj in self.objects:
-            obj.tick(self.tick_length)
+            obj.tick(tick_length)
 
     def tick_object(self, obj: PhysicsObject):
         """Make a single physics tick pass for a single object."""
@@ -33,19 +33,24 @@ class PhysicsManager():
         """Returns the tick_length (in seconds)."""
         return self.tick_length
     
-    def add_object(self, obj:PhysicsObject):
+    def add_object(self, ph_obj:PhysicsObject):
         """Add an object to this universe."""
-        for obj in self.objects:
-            if obj.name == name:
+        for obj in self.objects: #Make sure its name is not already used
+            if obj.name == ph_obj.name:
                 raise NameUsedError(name, "PhysicsObject")
-                return
 
-        self.objects.append(obj)
+        self.objects.append(ph_obj)
 
     def remove_object(self, obj:PhysicsObject):
+        """Remove a physics object using the instance itself"""
         self.objects.remove(obj)
 
     def remove_object_by_name(name:str):
+        """Remove a physics object using its name"""
         for obj in self.objects:
             if obj.name == name:
                 self.objects.remove(obj)
+
+    def clear(self):
+        """Remove all physics objects from the universe."""
+        self.objects.clear()
