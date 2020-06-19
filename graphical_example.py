@@ -14,6 +14,8 @@ import sys
 import math
 
 pygame.init()
+pygame.font.init()
+font = pygame.font.SysFont("Sans Serif", 20)
 
 # display
 width = 400
@@ -27,11 +29,12 @@ desired_fps = 60
 
 x = width/4
 y = height*(3/4)
-print(y)
 #Note that for pygame, the top of the screen is y=0
 
 #Setup pysics
+tick_length_max = 1 #Used for mouse position
 tick_length = 0.1 # Recommended to be low for games so collision works properly
+tick_length_min = 0
 pysics.game_mode = True
 manager = PhysicsManager(tick_length=tick_length)
 
@@ -53,9 +56,17 @@ def main():
     #The object must be added to the universe first
     manager.add_object(ball)
 
+    #Create the instructions
+    instruction_surface = font.render("Move the cursor up and down", False, (100,100,100))
+
     while True:
-        #print("\n")
-        manager.tick()
+        #To demonstrate how tick_rate can be used for slow-mo, move mouse up and down
+        mouse_pos_y = pygame.mouse.get_pos()[1]
+        tick_length = mouse_pos_y/height*tick_length_max
+        if (tick_length < tick_length_min): tick_length = tick_length_min
+        if (tick_length > tick_length_max): tick_length = tick_length_max
+        manager.tick(tick_length)
+
         #This should be done after the tick to make sure we are getting the CURRENT position
         ball_screen_y = height - ball.ypos #x pos in pysics is equivalent to the xpos in pygame
 
@@ -91,7 +102,6 @@ def main():
         #if ball_screen_y - ball_raidus <= 0:
         #    ball.apply_force("top side normal force", y=(abs(ball.yvel)*ball.mass/tick_length))
 
-        #print(ball_screen_y + ball_radius)
         if ball_screen_y + ball_radius >= height:
             bottom = Force("bottom side normal force", y=(abs(2*ball.yvel)*ball.mass)/wall_bump_tick_length, instantaneous=True)
             ball.apply_force(bottom)
@@ -100,6 +110,11 @@ def main():
 
         #Draw the background (white)
         window.fill((255, 255, 255))
+
+        #Draw the instructions
+        window.blit(instruction_surface, (10,10))
+        tick_length_text = font.render("Tick Length: " + str(tick_length), False, (100,100,100))
+        window.blit(tick_length_text, (10, 40))
 
         #Draw the ball
         pygame.draw.circle(window, ball_color, (int(ball.xpos), height-int(ball.ypos)), 5) #y=0 is at the top of the screen

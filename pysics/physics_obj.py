@@ -43,7 +43,8 @@ class PhysicsObject():
         self.calculate_accel()
 
     def tick(self, tick_length:float):
-        """One tick has passed for this object."""
+        """One tick has passed for this object. If tick_length is 0, then nothing happens because no time passes."""
+        if tick_length == 0: return #Literally no time passes.
         self.move(tick_length)
         # Update forces
 
@@ -54,25 +55,15 @@ class PhysicsObject():
         if pysics.game_mode: #Gamer mode (not scientific)
 
             #x = x(initial) + v(initial)(t) + 1/2(a)(t) - on a single axis
-            #print("yaccel: " + str(self.yaccel))
             self.xpos += self.xvel*tick_length + (1/2)*(self.xaccel)*(pow(tick_length,2))
-            #print("Before: " + str(self.ypos))
-            #print("change in y pos: " + str(self.yvel*tick_length + (1/2)*(self.yaccel)*(tick_length)))
             self.ypos += self.yvel*tick_length + (1/2)*(self.yaccel)*(pow(tick_length,2))
-            #print("After: " + str(self.ypos))
             self.zpos += self.zvel*tick_length + (1/2)*(self.zaccel)*(pow(tick_length,2))
 
 
             #v = v(initial) + (a)(t) - on a single axis
             self.xvel += (self.xaccel)*(tick_length)
             self.yvel += (self.yaccel)*(tick_length)
-            #print("change: " + str((self.yaccel)*(tick_length)))
-            #print("yvel: " + str(self.yvel))
             self.zvel += (self.zaccel)*(tick_length)
-
-            if abs(self.yvel) < 0.5:
-                print("ypos: " + str(self.ypos))
-                print("yaccel: " + str(self.yaccel))
 
             #acceleration does not change until the net force changes
 
