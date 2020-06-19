@@ -24,12 +24,15 @@ class Force():
 
     name = "force"
 
-    def __init__(self, name, x=0, y=0, z=0, force_type=0, g=0, parent_mass=0):
+    instantaneous=False
+
+    def __init__(self, name, x=0, y=0, z=0, force_type=0, g=0, parent_mass=0, instantaneous=False):
         """Create a force with the given name and horizontal and vertical forces in newtons. 
         Each dimension defaults to 0 so you only have to deal with what you want. force_type defaults to 0 to simply add an applied force.
         The gravitational constant is different for every force and defaults to 0.
         If you wish to have a specific gravitational acceleration for a gravitational force, supply g instead of vertical force and the
-        object's mass (parent_mass). The vertical force will be calculated from them. Forces created this way cannot be used by two different objects."""
+        object's mass (parent_mass). The vertical force will be calculated from them. Forces created this way cannot be used by two different objects.
+        Instantaneous forces are accounted for when calculating the new velocity over the tick, but not the position. All instantaneous forces are removed each tick (because they are instantaneous)."""
         self.name = name
         self.g = g
         self.x = x
@@ -41,3 +44,4 @@ class Force():
             self.y = y
         self.z = z
         self.force_type = force_type
+        self.instantaneous = instantaneous

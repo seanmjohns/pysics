@@ -48,18 +48,31 @@ class PhysicsObject():
         # Update forces
 
     def move(self, tick_length:float):
-        """Move the object on the 3d (or 2D) plane."""
-        self.calculate_accel()
+        """Move the object on the 3d (or 2D) plane over the time period given.
+        If instantaneous, then do not affect the position, just the velocity."""
+        self.calculate_accel() #Includes instantaneous forces
         if pysics.game_mode: #Gamer mode (not scientific)
+
             #x = x(initial) + v(initial)(t) + 1/2(a)(t) - on a single axis
-            self.xpos += self.xvel*tick_length + (1/2)*(self.xaccel)*(tick_length)
-            self.ypos += self.yvel*tick_length + (1/2)*(self.yaccel)*(tick_length)
-            self.zpos += self.zvel*tick_length + (1/2)*(self.zaccel)*(tick_length)
+            #print("yaccel: " + str(self.yaccel))
+            self.xpos += self.xvel*tick_length + (1/2)*(self.xaccel)*(pow(tick_length,2))
+            #print("Before: " + str(self.ypos))
+            #print("change in y pos: " + str(self.yvel*tick_length + (1/2)*(self.yaccel)*(tick_length)))
+            self.ypos += self.yvel*tick_length + (1/2)*(self.yaccel)*(pow(tick_length,2))
+            #print("After: " + str(self.ypos))
+            self.zpos += self.zvel*tick_length + (1/2)*(self.zaccel)*(pow(tick_length,2))
+
 
             #v = v(initial) + (a)(t) - on a single axis
             self.xvel += (self.xaccel)*(tick_length)
             self.yvel += (self.yaccel)*(tick_length)
+            #print("change: " + str((self.yaccel)*(tick_length)))
+            #print("yvel: " + str(self.yvel))
             self.zvel += (self.zaccel)*(tick_length)
+
+            if abs(self.yvel) < 0.5:
+                print("ypos: " + str(self.ypos))
+                print("yaccel: " + str(self.yaccel))
 
             #acceleration does not change until the net force changes
 
@@ -89,9 +102,18 @@ class PhysicsObject():
         self.forces.append(new_force)
 
     def remove_force(self, force):
-        forces.remove(force)
+        if force not in self.forces: return
+        self.forces.remove(force)
 
-    def clear_forces(self):
-        """Remove all the forces acting on this object"""
+    def remove_force_by_name(self, name:str):
+        """Remove a force based on its name. If the force is not applied to this object, fails silently."""
+        for force in forces:
+            if force.name == name:
+                forces.remove(force)
+
+    def clear_forces(self) -> list:
+        """Remove all the forces acting on this object. Returns all the forces that were applied."""
+        forces_copy = self.forces
         self.forces.clear()
+        return self.forces_copy
 

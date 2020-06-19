@@ -19,9 +19,10 @@ class PhysicsManager():
         self.gravitational_constant = gravitational_constant
         self.game_mode = game_mode
 
-    def tick(self, tick_length=tick_length):
+    def tick(self, tick_length=0):
         """Make a single physics tick pass for all objects in this universe.
         This is not recommended if you are creating a game. In the case of game creation, you should tick each object manually."""
+        if tick_length == 0: tick_length = self.tick_length #If tick length is 0, that means no tick length was given
         for obj in self.objects:
             obj.tick(tick_length)
 
