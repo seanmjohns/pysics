@@ -52,20 +52,18 @@ class PhysicsObject():
         """Move the object on the 3d (or 2D) plane over the time period given.
         If instantaneous, then do not affect the position, just the velocity."""
         self.calculate_accel() #Includes instantaneous forces
-        if pysics.game_mode: #Gamer mode (not scientific)
-
-            #x = x(initial) + v(initial)(t) + 1/2(a)(t) - on a single axis
-            self.xpos += self.xvel*tick_length + (1/2)*(self.xaccel)*(pow(tick_length,2))
-            self.ypos += self.yvel*tick_length + (1/2)*(self.yaccel)*(pow(tick_length,2))
-            self.zpos += self.zvel*tick_length + (1/2)*(self.zaccel)*(pow(tick_length,2))
+        #x = x(initial) + v(initial)(t) + 1/2(a)(t) - on a single axis
+        self.xpos += self.xvel*tick_length + (1/2)*(self.xaccel)*(pow(tick_length,2))
+        self.ypos += self.yvel*tick_length + (1/2)*(self.yaccel)*(pow(tick_length,2))
+        self.zpos += self.zvel*tick_length + (1/2)*(self.zaccel)*(pow(tick_length,2))
 
 
-            #v = v(initial) + (a)(t) - on a single axis
-            self.xvel += (self.xaccel)*(tick_length)
-            self.yvel += (self.yaccel)*(tick_length)
-            self.zvel += (self.zaccel)*(tick_length)
+        #v = v(initial) + (a)(t) - on a single axis
+        self.xvel += (self.xaccel)*(tick_length)
+        self.yvel += (self.yaccel)*(tick_length)
+        self.zvel += (self.zaccel)*(tick_length)
 
-            #acceleration does not change until the net force changes
+        #acceleration does not change until the net force changes
 
     def calculate_accel(self) -> tuple:
         """Calculates the the object's acceleration for each dimension.
