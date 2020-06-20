@@ -24,9 +24,7 @@ class Force():
 
     name = "force"
 
-    instantaneous=False
-
-    def __init__(self, name, x=0, y=0, z=0, force_type=0, g=0, parent_mass=0, instantaneous=False):
+    def __init__(self, name, x=0, y=0, z=0, force_type=0, g=0, parent_mass=0):
         """Create a force with the given name and horizontal and vertical forces in newtons. 
         Each dimension defaults to 0 so you only have to deal with what you want. force_type defaults to 0 to simply add an applied force.
         The gravitational constant is different for every force and defaults to 0.
@@ -44,4 +42,3 @@ class Force():
             self.y = y
         self.z = z
         self.force_type = force_type
-        self.instantaneous = instantaneous

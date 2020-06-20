@@ -65,6 +65,10 @@ class PhysicsObject():
 
         #acceleration does not change until the net force changes
 
+    def get_pos(self) -> tuple:
+        """Return the 3 dimensional position as (x, y, z)."""
+        return(self.xpos, self.ypos, self.zpos)
+
     def calculate_accel(self) -> tuple:
         """Calculates the the object's acceleration for each dimension.
         Returns a tuple of the dimensions. This assumes mass is negligible."""
