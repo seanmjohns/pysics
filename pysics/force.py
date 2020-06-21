@@ -14,9 +14,9 @@ def calculate_grav_force(g=EARTH_G, parent_mass=1) -> float:
     """Calculate the gravitational force that would be applied to an object
     with the given mass given a gravitational acceleration.
 
-    Calculation: ``gravitational force = mg``
-    * ``m`` is the mass of the parent object.
-    * ``g`` is the gravitational acceleration (the gravitational constant).
+    Calculation: ``gravitational force = mg``\n
+        * ``m`` is the mass of the parent object.\n
+        * ``g`` is the gravitational acceleration (the gravitational constant).
 
     Parameters
     ----------

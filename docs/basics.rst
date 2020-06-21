@@ -5,7 +5,7 @@ The Basics
 PhysicsManager
 ==============
 
-``PhysicsManager`` s represent a universe in which physics works a specific way based on its configuration. It is possible to have multiple universes that are used at the same time for different things. These "universes" operate on their own "ticks" (time). Each manager has a list of all the objects within its universe. When a tick passes for a universe, a tick passes for each object within it, and the forces for each object act on them.
+``PhysicsManager`` s each represent a universe in which physics works a specific way based on its configuration. It is possible to have multiple universes that are used at the same time for different things. These "universes" operate on their own "ticks" (time). Each manager has a list of all the objects within its universe. When a tick passes for a universe, a tick passes for each object within it, and the forces for each object act on them.
 
 Ticks
 =====
