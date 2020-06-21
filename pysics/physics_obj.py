@@ -1,45 +1,121 @@
-from pysics.force import Force
-from pysics import pysics
+from .force import Force
+import pysics
 
-from pysics.errors import MassOfZeroError
-from pysics.errors import NameUsedError
+from .errors import MassOfZeroError
+from .errors import NameUsedError
 
 class PhysicsObject():
     """Represents an object in space that will react as forces are applied on it over ticks.
     Acceleration is only calculated when the object moves (at the beginning of each tick).
     Acceleration can be manually calculated with PhysicsObject.calculate_accel().
-    Objects have a mass of 1 kilogram by default."""
+    Objects have a mass of 1 kilogram by default.
 
-    forces = []
+    Parameters
+    ----------
+    name: :class:`str`
+        The name of this object.
 
-    xvel = 0.0 #In meters per second
-    yvel = 0.0 #In meters per second
-    zvel = 0.0 #In meters per seconds
+    xpos: :class:`float`
+        The object's initial position on the x axis. Defaults to 0.0 if not provided.
+        East is positive, West is negative.
 
-    xpos = 0.0 #In meters
-    ypos = 0.0 #In meters
-    zpos = 0.0 #In meters
+    ypos: :class:`float`
+        The object's initial position on the y axis. Defaults to 0.0 if not provided.
+        Up is positive, Down is negative.
 
-    xaccel = 0.0 #In m/s^2
-    yaccel = 0.0 #In m/s^2
-    zaccel = 0.0 #In m/s^2
+    zpos: :class:`float`
+        The object's initial position on the z axis. Defaults to 0.0 if not provided.
+        North is positive, South is negative.
 
-    mass = 1.0 #kilograms
+    xvel: :class:`float`
+        The object's velocity on the x axis. Defaults to 0.0 if not provided.
+        East is positive, West is negative.
 
-    name = "obj"
+    yvel: :class:`float`
+        The object's velocity on the y axis. Defaults to 0.0 if not provided.
+        Up is positive, Down is negative.
 
-    def __init__(self, name, xvel=0.0, yvel=0.0, zvel=0.0, xpos=0.0, ypos=0.0, zpos=0.0, forces=[], mass=1.0):
+    zvel: :class:`float`
+        The object's velocity on the z axis. Defaults to 0.0 if not provided.
+        North is positive, South is negative.
+
+    forces: list[:class:`pysics.force.Force`]
+        The forces that will act on this object. Defaults to no forces.
+        Useful for creating many PhysicsObjects.
+
+    mass: :class:`float`
+        The mass of this object.
+
+
+    Attributes
+    ----------
+    name: :class:`str`
+        The name of this physics object. It cannot be the same as another object's name in the same universe.
+
+    forces: list[:class:`pysics.force.Force`]
+        All the forces that act on this object each tick.
+
+    mass: :class:`float`
+        This object's mass.
+
+    xpos: :class:`float`
+        This object's position on the x axis in meters.
+        East is positive, West is negative.
+
+    ypos: :class:`float`
+        This object's position on the y axis in meters.
+        Up is positive, Down is negative.
+
+    zpos: :class:`float`
+        This object's position on the z axis in meters.
+        North is positive, South is negative.
+
+    xvel: :class:`float`
+        This object's velocity on the x axis in meters per second.
+        East is positive, West is negative.
+
+    yvel: :class:`float`
+        This object's velocity on the y xis in meters per second.
+        Up is positive, Down is negatives.
+
+    zvel: :class:`float`
+        This object's velocity on the z axis in meters per second.
+        North is positive, South is negative.
+
+    xaccel: :class:`float`
+        This object's acceleration on the x axis in meters per second^2.
+        East is positive, West is negaitve.
+
+    yaccel: :class:`float`
+        This object's acceleration on the y axis in meters per second^2.
+        Up is positive, Down is negaitve.
+
+    zaccel: :class:`float`
+        This object's acceleration on the z axis in meters per second^2.
+        North is positive, South is negaitve.
+
+    """
+
+    def __init__(self, name, xpos=0.0, ypos=0.0, zpos=0.0, fxvel=0.0, yvel=0.0, zvel=0.0, forces=[], mass=1.0):
         if mass == 0:
             raise MassOfZeroError("PhysicsObjects cannot have a mass of 0.")
         self.name = name
-        self.xvel = xvel #Initial velocity 
-        self.yvel = yvel #Initial velocity
-        self.zvel = zvel #Initial velocity
-        self.xpos = xpos
-        self.ypos = ypos
-        self.zpos = zpos
+
+        self.xvel = xvel #Initial velocity in meters per second
+        self.yvel = yvel #Initial velocity in meters per second
+        self.zvel = zvel #Initial velocity in meters per second
+
+        self.xpos = xpos #in meters
+        self.ypos = ypos #in meters
+        self.zpos = zpos #in meters
+
+        self.xaccel = 0.0 #In m/s^2
+        self.yaccel = 0.0 #In m/s^2
+        self.zaccel = 0.0 #In m/s^2
+
         self.forces = forces
         self.mass = mass #Having altered mass may not be desired in some games, so mass is defaulted to 1 kilogram
+
         self.calculate_accel()
 
     def tick(self, tick_length:float):
@@ -66,7 +142,10 @@ class PhysicsObject():
         #acceleration does not change until the net force changes
 
     def get_pos(self) -> tuple:
-        """Return the 3 dimensional position as (x, y, z)."""
+        """
+            :return: Returns the 3 dimensional position as (x, y, z).
+            :rtype: tuple
+            """
         return(self.xpos, self.ypos, self.zpos)
 
     def calculate_accel(self) -> tuple:
@@ -87,7 +166,12 @@ class PhysicsObject():
         return (self.xaccel, self.yaccel, self.zaccel)
 
     def apply_force(self, new_force):
-        """Applies another force on this object. Acceleration is NOT recalculated here."""
+        """
+        Applies another force on this object. 
+            
+            .. note:: 
+                Currently unused and not changed (will always stay 0)
+        """
         for force in self.forces: #Make sure its name is not already used
             if force.name == new_force.name:
                 raise NameUsedError("You cannot use the same name twice for a force on the same object.")

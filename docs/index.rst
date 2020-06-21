@@ -11,7 +11,8 @@ Welcome to pysics's documentation!
     :caption: Contents:
 
     basics
-    
+    reference
+
 Indices and tables
 ==================
 

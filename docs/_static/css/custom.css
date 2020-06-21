@@ -1,0 +1,39 @@
+.document {
+    width: 65% !important;
+}
+
+.class > dt,
+.exception > dt,
+.attribute > dt,
+.method > dt {
+    margin: 20px 0px 20px 0px;
+    padding: 10px 10px 10px 10px !important;
+    border-left: 2px solid;
+    background-color: #e8e8e8;
+}
+
+#the-basics > .section,
+#pysics-reference > .section {
+    margin: 50px 0px 50px 0px;
+    padding: 10px 30px 50px 30px !important;
+    border-left: 10px solid;
+    background-color: #f2f4f4;
+}
+
+div[role="main"] > .section > h1 {
+    margin: 0px 0px 20px 0px;
+    padding: 0px 0px 30px 0px;
+    border-bottom: 2px solid;
+}
+
+div[role="main"] {
+    max-width: 1100px;
+}
+
+code.descname {
+    font-size: 0.95em;
+}
+
+body {
+    font-size: 16px;
+}

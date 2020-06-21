@@ -7,8 +7,8 @@ PhysicsManager
 
 ``PhysicsManager`` s represent a universe in which physics works a specific way based on its configuration. It is possible to have multiple universes that are used at the same time for different things. These "universes" operate on their own "ticks" (time). Each manager has a list of all the objects within its universe. When a tick passes for a universe, a tick passes for each object within it, and the forces for each object act on them.
 
-Tick
-====
+Ticks
+=====
 
 "Ticks" are the amount of time that passes. The ``tick_length`` of a manager is configurable on the fly and is specific to each manager. It is common to change the tick length for an individual tick, sometimes to have a specific force to act over a smaller or instantaneous time interval (allowing for things like collisions). 
 
