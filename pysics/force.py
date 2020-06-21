@@ -2,11 +2,13 @@ from .errors import MassOfZeroError
 
 #The gravitational acceleration while on the surface of...
 EARTH_G = 9.80665 #m/s^2
-"""The gravitational acceleration on the surface of the Earth in m/s^2 (9.80665)"""
+"""The gravitational acceleration on the surface of the Earth in m/s^2"""
+
 MOON_G = 1.625 #m/s^2
-"""The gravitational acceleration on the surface of the Moon in m/s^2 (1.625)"""
+"""The gravitational acceleration on the surface of the Moon in m/s^2"""
+
 MARS_G = 3.72076 #m/2^2
-"""The gravitational acceleration on the surface of Mars in m/s^2 (3.72076)"""
+"""The gravitational acceleration on the surface of Mars in m/s^2"""
 
 def calculate_grav_force(g=EARTH_G, parent_mass=1) -> float:
     """Calculate the gravitational force that would be applied to an object
@@ -40,6 +42,8 @@ class Force():
 
     The x, y, and z attributes can be used freely by developers (meaning you can use any axis as you wish. For example, you could use the universe's y axis as your z axis).
     If you desire to only have 2D motion, then completely ignore an entire dimension. If you wish to only have 1D motion, the ignore 2 dimensions.
+
+    It is not recommended that the variable that stores a :class:`Force` be called ``force``, because that is also the name of the module :mod:`force`, which could cause naming conflicts.
 
     Parameters
     ----------
