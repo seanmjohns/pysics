@@ -34,8 +34,8 @@ y = height*(3/4)
 
 #Setup pysics
 tick_length_max = 1 #Used for mouse position
-tick_length = 0.1 # Recommended to be low for games so collision works properly
-tick_length_min = 0
+tick_length = 0 # Recommended to be low for games so collision works properly (This example, the default is 0, because that is the middle)
+tick_length_min = -1
 pysics.game_mode = True
 manager = PhysicsManager(tick_length=tick_length)
 
@@ -47,8 +47,6 @@ def main():
     ball = PhysicsObject("ball", xpos=x, ypos=y, xvel=10, mass=1) #Initial velocity is 0.5 to the right
     ball_color = Color(0, 0, 0)
     ball_radius = 5
-
-    print(force.EARTH_G)
 
     #Apply the gravitational force
     g = force.calculate_grav_force(force.EARTH_G, ball.mass)
@@ -62,9 +60,9 @@ def main():
     instruction_surface = font.render("Move the cursor up and down", False, (100,100,100))
 
     while True:
-        #To demonstrate how tick_rate can be used for slow-mo, move mouse up and down
+        #To demonstrate how tick_rate can be used for slow-mo (and even backwards-moving time), move mouse up and down
         mouse_pos_y = pygame.mouse.get_pos()[1]
-        tick_length = mouse_pos_y/height*tick_length_max
+        tick_length = (mouse_pos_y-height/2)/(height/2)*tick_length_max
         if (tick_length < tick_length_min): tick_length = tick_length_min
         if (tick_length > tick_length_max): tick_length = tick_length_max
         manager.tick(tick_length)
@@ -89,13 +87,21 @@ def main():
             #Force = (2v*m)/t, so
             #Force = (2*xvel*mass)/tick_length : The 2 is factored in with  the ball.xvel*elasticity
             #This force is the one we need to apply
-            left = Force("left side normal force", x=(abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length)
+            left = None
+            if tick_length < 0:
+                left = Force("left side normal force", x=(-abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length)
+            else:
+                left = Force("left side normal force", x=(abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length)
             ball.apply_force(left)
             ball.tick(wall_bump_tick_length)
             ball.remove_force(left)
 
         if ball.xpos + ball_radius >= width:
-            right = Force("right side normal force", x=(-abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length) #Going to the negative direction, so xvel needs to be negative
+            right = None
+            if tick_length < 0:
+                right = Force("right side normal force", x=(abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length)
+            else:
+                right = Force("right side normal force", x=(-abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length)
             ball.apply_force(right)
             ball.tick(wall_bump_tick_length)
             ball.remove_force(right)
@@ -105,7 +111,11 @@ def main():
         #    ball.apply_force("top side normal force", y=(abs(ball.yvel)*ball.mass/tick_length))
 
         if ball_screen_y + ball_radius >= height:
-            bottom = Force("bottom side normal force", y=(abs(2*ball.yvel)*ball.mass)/wall_bump_tick_length)
+            bottom = None
+            if tick_length < 0:
+                bottom = Force("bottom side normal force", y=(-abs(2*ball.yvel)*ball.mass)/wall_bump_tick_length)
+            else:
+                bottom = Force("bottom side normal force", y=(abs(2*ball.yvel)*ball.mass)/wall_bump_tick_length)
             ball.apply_force(bottom)
             ball.tick(wall_bump_tick_length)
             ball.remove_force(bottom)
