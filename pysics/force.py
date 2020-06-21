@@ -1,5 +1,40 @@
 from .errors import MassOfZeroError
 
+#The gravitational acceleration while on the surface of...
+EARTH_G = 9.80665 #m/s^2
+"""The gravitational acceleration on the surface of the Earth in m/s^2 (9.80665)"""
+MOON_G = 1.625 #m/s^2
+"""The gravitational acceleration on the surface of the Moon in m/s^2 (1.625)"""
+MARS_G = 3.72076 #m/2^2
+"""The gravitational acceleration on the surface of Mars in m/s^2 (3.72076)"""
+
+def calculate_grav_force(g=EARTH_G, parent_mass=1) -> float:
+    """Calculate the gravitational force that would be applied to an object
+    with the given mass given a gravitational acceleration.
+
+    Calculation: ``gravitational force = mg``
+    * ``m`` is the mass of the parent object.
+    * ``g`` is the gravitational acceleration (the gravitational constant).
+
+    Parameters
+    ----------
+    g: :class:`float`
+        The gravitational acceleration (gravitational constant). This is the resulting acceleration from the force.
+        Defaults to :attr:`EARTH_G` (9.80665 m/s^2)
+
+    parent_mass: :class:`float`
+        The mass of the object the gravitational force will be applied to. Defaults to 1 kilogram.
+
+    Returns
+    -------
+    :class:`float`
+        The newtons of force that would be required to have a mass of ``parent_mass`` accelerate at ``g`` m/s^2.
+        The force you will make from this does not necessarily have to be on the y (vertical) axis. Why not have gravity be sideways?
+    """
+
+    return g*parent_mass
+
+
 class Force():
     """A force that acts upon a :class:`PhysicsObject`.
 

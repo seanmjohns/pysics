@@ -126,6 +126,6 @@ class PhysicsManager():
             Useful for transferring all objects to a different universe.
 
         """
-        objects_copy = objects
+        objects_copy = self.objects
         self.objects.clear()
         return objects_copy

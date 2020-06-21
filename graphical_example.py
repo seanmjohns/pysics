@@ -7,6 +7,7 @@ from pygame import Color
 from pysics.manager import PhysicsManager
 from pysics.physics_obj import PhysicsObject
 from pysics.force import Force
+from pysics import force
 from pysics import pysics
 
 # python util libraries
@@ -38,8 +39,6 @@ tick_length_min = 0
 pysics.game_mode = True
 manager = PhysicsManager(tick_length=tick_length)
 
-earth_g = 9.80665
-
 wall_bump_tick_length = 0.0001
 
 def main():
@@ -49,8 +48,11 @@ def main():
     ball_color = Color(0, 0, 0)
     ball_radius = 5
 
+    print(force.EARTH_G)
+
     #Apply the gravitational force
-    grav_force = Force("gravitational force", g=earth_g, parent_mass=ball.mass)
+    g = force.calculate_grav_force(force.EARTH_G, ball.mass)
+    grav_force = Force("gravitational force", y=-g) #Note that you need to make it go downwards, because thats what gravitational forces do.
     ball.apply_force(grav_force)
 
     #The object must be added to the universe first
@@ -77,7 +79,7 @@ def main():
                 pygame.quit()
                 sys.exit(0)
 
-        #Determine if the ball has hit a boundary (account for ball radius) - Apply an instantaneous (really its one tick) normal force against it if so (removed next frame)
+        #Determine if the ball has hit a boundary (account for ball radius) - Apply an instantaneous (really its one tiny tick) normal force against it if so
         if ball.xpos - ball_radius <= 0:
             #Impulse = change in momentum
             #Impulse = force*change in time
@@ -87,13 +89,13 @@ def main():
             #Force = (2v*m)/t, so
             #Force = (2*xvel*mass)/tick_length : The 2 is factored in with  the ball.xvel*elasticity
             #This force is the one we need to apply
-            left = Force("left side normal force", x=(abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length, instantaneous=True)
+            left = Force("left side normal force", x=(abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length)
             ball.apply_force(left)
             ball.tick(wall_bump_tick_length)
             ball.remove_force(left)
 
         if ball.xpos + ball_radius >= width:
-            right = Force("right side normal force", x=(-abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length, instantaneous=True) #Going to the negative direction, so xvel needs to be negative
+            right = Force("right side normal force", x=(-abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length) #Going to the negative direction, so xvel needs to be negative
             ball.apply_force(right)
             ball.tick(wall_bump_tick_length)
             ball.remove_force(right)
@@ -103,7 +105,7 @@ def main():
         #    ball.apply_force("top side normal force", y=(abs(ball.yvel)*ball.mass/tick_length))
 
         if ball_screen_y + ball_radius >= height:
-            bottom = Force("bottom side normal force", y=(abs(2*ball.yvel)*ball.mass)/wall_bump_tick_length, instantaneous=True)
+            bottom = Force("bottom side normal force", y=(abs(2*ball.yvel)*ball.mass)/wall_bump_tick_length)
             ball.apply_force(bottom)
             ball.tick(wall_bump_tick_length)
             ball.remove_force(bottom)

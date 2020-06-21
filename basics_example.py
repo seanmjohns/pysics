@@ -29,5 +29,4 @@ print("Ball position: (x, y, z)")
 for second in range(1,6):
     # Make a second (length of tick_length) pass
     manager.tick()
-    string_second = str(second)
-    print(string_second + " second(s): " + str(ball.get_pos()))
+    print(str(second) + " second(s): " + str(ball.get_pos()))

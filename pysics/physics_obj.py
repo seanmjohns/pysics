@@ -101,7 +101,7 @@ class PhysicsObject():
 
     """
 
-    def __init__(self, name, xpos=0.0, ypos=0.0, zpos=0.0, fxvel=0.0, yvel=0.0, zvel=0.0, forces=[], mass=1.0):
+    def __init__(self, name, xpos=0.0, ypos=0.0, zpos=0.0, xvel=0.0, yvel=0.0, zvel=0.0, forces=[], mass=1.0):
         if mass == 0:
             raise MassOfZeroError("PhysicsObjects cannot have a mass of 0.")
         self.name = name
@@ -156,7 +156,7 @@ class PhysicsObject():
 
     def get_pos(self) -> tuple:
         """
-        Returns the object's current position in the form (x, y, z)
+        Returns the object's current position on each axis in the form (x, y, z)
 
         Returns
         -------
@@ -164,6 +164,28 @@ class PhysicsObject():
             Returns a tuple of the object's position on the 3 dimensions (x, y, z)
         """
         return(self.xpos, self.ypos, self.zpos)
+
+    def get_vel(self) -> tuple:
+        """
+        Returns the object's current velocity on each axis in the form (x, y, z)
+
+        Returns
+        -------
+        tuple(:class:`float`,:class:`float`,:class:`float`)
+            Returns a tuple of the object's velocity on the 3 dimensions (x, y, z)
+        """
+        return(self.xvel, self.yvel, self.zvel)
+
+    def get_accel(self) -> tuple:
+        """
+        Returns the object's current acceleration on each axis in the form (x, y, z)
+
+        Returns
+        -------
+        tuple(:class:`float`,:class:`float`,:class:`float`)
+            Returns a tuple of the object's acceleration on the 3 dimensions (x, y, z)
+        """
+        return(self.xaccel, self.yaccel, self.zaccel)
 
     def calculate_accel(self) -> tuple:
         """
@@ -260,5 +282,4 @@ class PhysicsObject():
         """
         forces_copy = self.forces
         self.forces.clear()
-        return self.forces_copy
-
+        return forces_copy
