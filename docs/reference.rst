@@ -6,8 +6,6 @@ Pysics Reference
 .. toctree::
     :maxdepth: 2
 
-    
-
 Managers
 ========
 

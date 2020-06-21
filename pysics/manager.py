@@ -3,24 +3,25 @@ from .physics_obj import PhysicsObject
 from .errors import NameUsedError
 
 class PhysicsManager():
-    """
-    Represents a universe in which physics works the way it does in that universe.
+    """Represents a universe in which physics works the way it does in that universe.
     Time (ticks) passes individually in each universe.
 
     Parameters
     ----------
     tick_length: :class:`float`
         The amount of time, in seconds, a tick is for this universe. This can be changed after initialization.
+        Time can move backwards.
 
     Attributes
     ----------
     objects: List[:class:`pysics.physics_obj.PhysicsObject`]
         All the objects within this universe. 
         Ticks pass for all objects when :meth:`tick` is called.
+
     tick_length: :class:`double`
         The configured value of how many seconds a tick is.
         Recommended to be small for games to reduce/prevent collision issues.
-        For some strange effects, yes, this can be negative.
+        Yes, time can move backwards.
 
     """
 
@@ -28,18 +29,23 @@ class PhysicsManager():
         self.objects = []
         self.tick_length = tick_length
 
-    def tick(self, tick_length=-1):
+    def tick(self, tick_length=None):
         """Make a single physics tick pass for all objects in this universe. 
 
-        If tick_length is 0, then use the universe's tick length.
+        If tick_length is not supplied, then use the universe's tick length.
 
         Parameters
         ----------
         tick_length: :class:`float`
-            The amount of time this tick lasts.
+            The amount of time this tick lasts. 
+            
+            .. note::
+
+                Time *can* move backwards.
+
         """
         
-        if tick_length < 0: tick_length = self.tick_length #If tick length is 0, that means no tick length was given
+        if tick_length is None: tick_length = self.tick_length #If tick length is 0, that means no tick length was given
         for obj in self.objects:
             obj.tick(tick_length)
 
@@ -57,17 +63,6 @@ class PhysicsManager():
         """
         obj.tick(self.tick_length)
 
-    def configured_tick_length(self) -> float:
-        """Returns the configured tick length for this universe.
-
-        Returns
-        -------
-        :class:`str`
-            The configured tick length.
-        """
-
-        return self.tick_length
-    
     def add_object(self, ph_obj:PhysicsObject):
         """
 
@@ -80,14 +75,13 @@ class PhysicsManager():
 
         Raises
         ------
-
         :exc:`pysics.errors.NameUsedError`
             There cannot be two objects in one universe with the same name.
 
         """
         for obj in self.objects: #Make sure its name is not already used
             if obj.name == ph_obj.name:
-                raise NameUsedError(name, "PhysicsObject")
+                raise NameUsedError("There cannot be two objects within the same universe with the same name.")
 
         self.objects.append(ph_obj)
 
@@ -120,10 +114,18 @@ class PhysicsManager():
             if obj.name == name:
                 self.objects.remove(obj)
 
-    def clear(self):
+    def clear(self) -> tuple:
         """
 
         Remove all physics objects from the universe. Clears the objects list.
 
+        Returns
+        -------
+        List[:class:`pysics.physics_obj.PhysicsObject`]
+            All the objects that were previously a part of this universe.
+            Useful for transferring all objects to a different universe.
+
         """
+        objects_copy = objects
         self.objects.clear()
+        return objects_copy

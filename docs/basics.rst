@@ -39,13 +39,7 @@ Although objects *can* be within multiple universes, it is *not* recommended, be
 Force
 =====
 
-``Force`` s are exactly what they sound like: forces that act on a ``PhysicsObject``, and they are a part of their parent ``PhysicsObject``. Forces are in Newtons. They act on their parent objects based on how long an object is "ticked" (it is possible to tick an object individually, however in most cases, programmers tick in unison with all other objects in their manager's universe). 
-
-Just like ``PhysicsObject`` s and ``PhysicsManager`` s, forces *can* be used by multiple ``PhysicsObject`` s, but it is *not* recommended. Most forces will not cause trouble because they are not usually dependent on the object they are applied to. Gravitational forces that are created by supplying the gravitational acceleration, ``g``, however, are a problem. When a force with the gravitational acceleration argument is created, the force is calculated on ``__init__`` **using the parent object's mass**. If two objects have different masses, a single gravitational force created with a gravitational acceleration cannot be used on both (and have them function correctly. Technically speaking, no error will be thrown.). 
-
-It *is* possible to still have a gravitational force that can be used on two ``PhysicsObject`` s that would not programmatically break (however it would still not make sense if the parent objects' masses are not the same, because they would then not accelerate downwards at the same rate). Instead of supplying the ``g``, create a regular force, but the force must be calculated first.
-
-New types of forces may be added in the future that may not be able to be used on multiple objects.
+``Force`` s are exactly what they sound like: forces that act on a ``PhysicsObject``, and they are a part of their parent ``PhysicsObject``. Forces are in Newtons. They act on their parent objects based on how long an object is "ticked" (it is possible to tick an object individually, however in most cases, programmers tick in them unison with all other objects in their manager's universe). 
 
 Example
 =======
