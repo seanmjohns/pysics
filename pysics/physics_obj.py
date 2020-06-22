@@ -160,7 +160,7 @@ class PhysicsObject():
 
         Returns
         -------
-        tuple(:class:`float`,:class:`float`,:class:`float`)
+        tuple(:class:`float`, :class:`float`, :class:`float`)
             Returns a tuple of the object's position on the 3 dimensions (x, y, z)
         """
         return(self.xpos, self.ypos, self.zpos)
@@ -171,7 +171,7 @@ class PhysicsObject():
 
         Returns
         -------
-        tuple(:class:`float`,:class:`float`,:class:`float`)
+        tuple(:class:`float`, :class:`float`, :class:`float`)
             Returns a tuple of the object's velocity on the 3 dimensions (x, y, z)
         """
         return(self.xvel, self.yvel, self.zvel)
@@ -182,7 +182,7 @@ class PhysicsObject():
 
         Returns
         -------
-        tuple(:class:`float`,:class:`float`,:class:`float`)
+        tuple(:class:`float`, :class:`float`, :class:`float`)
             Returns a tuple of the object's acceleration on the 3 dimensions (x, y, z)
         """
         return(self.xaccel, self.yaccel, self.zaccel)

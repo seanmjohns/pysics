@@ -2,6 +2,7 @@
     width: 65% !important;
 }
 
+.section > h3,
 .function > dt,
 .data > dt,
 .class > dt,
@@ -15,11 +16,16 @@
 }
 
 #the-basics > .section,
+#accuracy-of-pysics > .section,
 #pysics-reference > .section {
     margin: 50px 0px 50px 0px;
     padding: 10px 30px 50px 30px !important;
     border-left: 10px solid;
     background-color: #f2f4f4;
+}
+
+.field-list {
+    display: block !important;
 }
 
 div[role="main"] > .section > h1 {
@@ -38,4 +44,17 @@ code.descname {
 
 body {
     font-size: 15px;
+}
+
+div.body ul {
+    padding-left: 1.3em;
+    list-style: disc;
+    margin: 1em 0px;
+}
+
+dd {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    margin-left: 30px !important;
+    list-style: disc;
 }

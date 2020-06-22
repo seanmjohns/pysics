@@ -11,6 +11,8 @@ Welcome to pysics's documentation!
     :caption: Contents:
 
     basics
+    accuracy
+    collisions
     reference
 
 Indices and tables
