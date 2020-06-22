@@ -36,7 +36,6 @@ def calculate_grav_force(g=EARTH_G, parent_mass=1) -> float:
 
     return g*parent_mass
 
-
 class Force():
     """A force that acts upon a :class:`PhysicsObject`.
 
