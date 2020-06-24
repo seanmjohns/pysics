@@ -1,8 +1,6 @@
 # python util libraries
-import sys, os
+import sys
 import math
-
-sys.path.insert(0, os.path.abspath('..')) #You wont need this
 
 #pygame
 import pygame

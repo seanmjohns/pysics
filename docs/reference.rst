@@ -6,26 +6,26 @@ Pysics Reference
 .. toctree::
     :maxdepth: 2
 
-Managers
-========
+pysics.manager
+==============
 
 .. automodule:: pysics.manager
     :members:
 
-Objects
-=======
+pysics.obj
+==========
 
-.. automodule:: pysics.physics_obj
+.. automodule:: pysics.obj
     :members:
 
-Forces
-======
+pysics.force
+============
 
 .. automodule:: pysics.force
     :members:
 
-Errors
-======
+pysics.errors
+=============
 
 .. automodule:: pysics.errors
     :members:

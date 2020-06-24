@@ -3,9 +3,8 @@ import pygame
 from pygame.locals import *
 
 # Python libraries
-import sys, os
+import sys
 import math
-sys.path.insert(0, os.path.abspath('..'))
 
 # pysics
 from pysics.manager import PhysicsManager

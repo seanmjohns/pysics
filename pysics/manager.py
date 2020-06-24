@@ -1,4 +1,4 @@
-from .physics_obj import PhysicsObject
+from .obj import PhysicsObject
 
 from .errors import NameUsedError
 

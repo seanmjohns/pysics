@@ -1,5 +1,4 @@
-import sys, os
-sys.path.insert(0, os.path.abspath('..'))
+import sys
 
 from pysics.manager import PhysicsManager
 from pysics.force import Force
