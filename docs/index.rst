@@ -12,7 +12,6 @@ Pysics Documentation
     basics
     accuracy
     collisions
-    rotation
     reference
 
 
