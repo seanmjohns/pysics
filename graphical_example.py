@@ -14,6 +14,8 @@ from pysics import pysics
 import sys
 import math
 
+print(math.cos(math.pi/2))
+
 pygame.init()
 pygame.font.init()
 font = pygame.font.SysFont("Sans Serif", 20)
@@ -41,12 +43,16 @@ manager = PhysicsManager(tick_length=tick_length)
 
 wall_bump_tick_length = 0.0001
 
+boundary_coef_of_friction = 0.5
+
 def main():
 
     #Create the ball
-    ball = PhysicsObject("ball", xpos=x, ypos=y, xvel=10, mass=1) #Initial velocity is 0.5 to the right
+    ball = PhysicsObject("ball", xpos=x, ypos=y, xvel=10, mass=1, moment_of_inertia=1) #Initial velocity is 0.5 to the right
     ball_color = Color(0, 0, 0)
-    ball_radius = 5
+    ball_radius = 7.5
+
+    ball_image = pygame.image.load("images/ball.png")
 
     #Apply the gravitational force
     g = force.calculate_grav_force(force.EARTH_G, ball.mass)
@@ -78,7 +84,7 @@ def main():
                 sys.exit(0)
 
         #Determine if the ball has hit a boundary (account for ball radius) - Apply an instantaneous (really its one tiny tick) normal force against it if so
-        if ball.xpos - ball_radius <= 0:
+        if ball.xpos + ball_radius <= 0:
             #Impulse = change in momentum
             #Impulse = force*change in time
             #Change in momentum = change in velocity * mass (mass is constant)
@@ -110,15 +116,24 @@ def main():
         #if ball_screen_y - ball_raidus <= 0:
         #    ball.apply_force("top side normal force", y=(abs(ball.yvel)*ball.mass/tick_length))
 
-        if ball_screen_y + ball_radius >= height:
+        if ball_screen_y - ball_radius >= height:
             bottom = None
+            friction = None
             if tick_length < 0:
                 bottom = Force("bottom side normal force", y=(-abs(2*ball.yvel)*ball.mass)/wall_bump_tick_length)
             else:
                 bottom = Force("bottom side normal force", y=(abs(2*ball.yvel)*ball.mass)/wall_bump_tick_length)
+
+            if ball.xvel < 0:
+                friction = Force("bottom friction force", x=(abs(boundary_coef_of_friction*bottom.y*wall_bump_tick_length)), x_rotation_axis_distance=ball_radius, x_rot_angle=math.pi/2) #Friction = (coefficient of friction)*(normal force)
+            else:
+                friction = Force("bottom friction force", x=(-abs(boundary_coef_of_friction*bottom.y*wall_bump_tick_length)), x_rotation_axis_distance=ball_radius, x_rot_angle=math.pi/2) #Friction = (coefficient of friction)*(normal force)
+
             ball.apply_force(bottom)
+            ball.apply_force(friction)
             ball.tick(wall_bump_tick_length)
             ball.remove_force(bottom)
+            ball.remove_force(friction)
 
         #Draw the background (white)
         window.fill((255, 255, 255))
@@ -129,7 +144,7 @@ def main():
         window.blit(tick_length_text, (10, 40))
 
         #Draw the ball
-        pygame.draw.circle(window, ball_color, (int(ball.xpos), height-int(ball.ypos)), 5) #y=0 is at the top of the screen
+        window.blit(pygame.transform.rotate(ball_image, math.degrees(ball.x_orientation)), (int(ball.xpos), height-int(ball.ypos))) #y=0 is at the top of the screen
 
         pygame.display.update()
 

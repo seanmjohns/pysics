@@ -3,6 +3,9 @@ import pysics
 
 from .errors import MassOfZeroError
 from .errors import NameUsedError
+from .errors import MomentOfInertiaZeroError
+
+import math
 
 class PhysicsObject():
     """Represents an object in space that will react as forces are applied on it over ticks (time).
@@ -101,9 +104,11 @@ class PhysicsObject():
 
     """
 
-    def __init__(self, name, xpos=0.0, ypos=0.0, zpos=0.0, xvel=0.0, yvel=0.0, zvel=0.0, forces=[], mass=1.0):
+    def __init__(self, name, xpos=0.0, ypos=0.0, zpos=0.0, xvel=0.0, yvel=0.0, zvel=0.0, x_orientation=0.0, y_orientation=0.0, z_orientation=0.0, x_angular_vel=0.0, y_angular_vel=0.0, z_angular_vel=0.0, forces=[], mass=1.0, moment_of_inertia=1.0):
         if mass == 0:
             raise MassOfZeroError("PhysicsObjects cannot have a mass of 0.")
+        if moment_of_inertia == 0:
+            raise MomentOfInertiaZeroError("Physics Objects cannot have a moment of inertia of 0.")
         self.name = name
 
         self.xvel = xvel #Initial velocity in meters per second
@@ -118,10 +123,26 @@ class PhysicsObject():
         self.yaccel = 0.0 #In m/s^2
         self.zaccel = 0.0 #In m/s^2
 
+        #Rotational
+        self.x_orientation = x_orientation #In radians
+        self.y_orientation = y_orientation #In radians
+        self.z_orientation = z_orientation #In radians
+
+        self.x_angular_vel = x_angular_vel #In m/s
+        self.y_angular_vel = y_angular_vel #In m/s
+        self.z_angular_vel = z_angular_vel #In m/s
+
+        self.x_angular_accel = 0.0 #In m/s^2
+        self.y_angular_accel = 0.0 #In m/s^2
+        self.z_angular_accel = 0.0 #In m/s^2
+
+
         self.forces = forces
         self.mass = mass #Having altered mass may not be desired in some games, so mass is defaulted to 1 kilogram
+        self.moment_of_inertia = moment_of_inertia #In kg*m^2
 
         self.calculate_accel()
+        self.calculate_angular_accel()
 
     def tick(self, tick_length:float):
         """
@@ -132,6 +153,8 @@ class PhysicsObject():
 
         Acceleration is recalculated just before the position and velocity are updated.
 
+        Translational position/velocity is calculated first.
+
         Parameters
         ----------
         tick_length: :class:`float`
@@ -140,7 +163,7 @@ class PhysicsObject():
         """
 
         if tick_length == 0: return #Literally no time passes.
-        self.calculate_accel() #Includes instantaneous forces
+        self.calculate_accel()
         #x = x(initial) + v(initial)(t) + 1/2(a)(t) - on a single axis
         self.xpos += self.xvel*tick_length + (1/2)*(self.xaccel)*(pow(tick_length,2))
         self.ypos += self.yvel*tick_length + (1/2)*(self.yaccel)*(pow(tick_length,2))
@@ -152,7 +175,20 @@ class PhysicsObject():
         self.yvel += (self.yaccel)*(tick_length)
         self.zvel += (self.zaccel)*(tick_length)
 
-        #acceleration does not change until the net force changes
+        self.calculate_angular_accel()
+        #Now for angular stuff (Uses same equations as translational, except uses angular versions of variables)
+        self.x_orientation += self.x_angular_vel*tick_length + (1/2)*(self.x_angular_accel)*(pow(tick_length,2))
+        self.y_orientation += self.y_angular_vel*tick_length + (1/2)*(self.y_angular_accel)*(pow(tick_length,2))
+        self.z_orientation += self.z_angular_vel*tick_length + (1/2)*(self.z_angular_accel)*(pow(tick_length,2))
+
+        print(self.x_orientation)
+        
+
+        self.x_angular_vel += (self.x_angular_accel)*(tick_length)
+        self.y_angular_vel += (self.y_angular_accel)*(tick_length)
+        self.z_angular_vel += (self.z_angular_accel)*(tick_length)
+
+        #acceleration does not change until the net force (or net torque for angular acceleration) changes
 
     def get_pos(self) -> tuple:
         """
@@ -165,6 +201,17 @@ class PhysicsObject():
         """
         return(self.xpos, self.ypos, self.zpos)
 
+    def get_orientation(self) -> tuple:
+        """
+        Returns the object's current orientation on each axis in the form (x, y, z)
+
+        Returns
+        -------
+        tuple(:class:`float`, :class:`float`, :class:`float`)
+            Returns a tuple of the object's position on the 3 dimensions (x, y, z)
+        """
+        return(self.x_orientation, self.y_orientation, self.z_orientation)
+
     def get_vel(self) -> tuple:
         """
         Returns the object's current velocity on each axis in the form (x, y, z)
@@ -176,28 +223,50 @@ class PhysicsObject():
         """
         return(self.xvel, self.yvel, self.zvel)
 
+    def get_angular_vel(self) -> tuple:
+        """
+        Returns the object's current angular velocity on each axis in the form (x, y, z)
+
+        Returns
+        -------
+        tuple(:class:`float`, :class:`float`, :class:`float`)
+            Returns a tuple of the object's velocity on the 3 dimensions (x, y, z)
+        """
+        return(self.x_angular_vel, self.y_angular_vel, self.z_angular_vel)
+
     def get_accel(self) -> tuple:
         """
-        Returns the object's current acceleration on each axis in the form (x, y, z)
+        Returns the object's current translational acceleration on each axis in the form (x, y, z)
+
+        Returns
+        -------
+        tuple(:class:`float`, :class:`float`, :class:`float`)
+            Returns a tuple of the object's translational acceleration on the 3 dimensions (x, y, z)
+        """
+        return(self.xaccel, self.yaccel, self.zaccel)
+
+    def get_angular_accel(self) -> tuple:
+        """
+        Returns the object's current angular acceleration on each axis in the form (x, y, z)
 
         Returns
         -------
         tuple(:class:`float`, :class:`float`, :class:`float`)
             Returns a tuple of the object's acceleration on the 3 dimensions (x, y, z)
         """
-        return(self.xaccel, self.yaccel, self.zaccel)
+        return(self.x_angular_accel, self.y_angular_accel, self.z_angular_accel)
 
     def calculate_accel(self) -> tuple:
         """
-        Calculates and sets the object's acceleration for each dimension.
+        Calculates and sets the object's translational (linear) acceleration for each dimension.
 
         Adds all the newtons of force for each dimension from :attr:`forces`, then divides each result by the :attr:`mass`.
 
-        This is called when a :meth:`tick` is called. Acceleration can be updated manually by calling this function.
+        This is called when a :meth:`tick` is called. Translational acceleration can be updated manually by calling this function.
 
         Returns
         -------
-        tuple(:class:`float`, :class:`float`, :class:`float`)
+        tuple(:class:`float`, :class:`float`, :class:`float`, :class:`float`, :class:`float`)
             Returns a tuple of the object's acceleration on the 3 dimensions (x, y, z)
 
         Raises
@@ -208,17 +277,55 @@ class PhysicsObject():
 
         if self.mass == 0:
             raise MassOfZeroError("PhysicsObjects cannot have a mass of 0.")
+
         self.xaccel = 0
         self.yaccel = 0
         self.zaccel = 0
         for force in self.forces:
-            self.xaccel =+ force.x
-            self.yaccel =+ force.y
-            self.zaccel =+ force.z
+            self.xaccel += force.x*math.cos(force.x_rot_angle)
+            self.yaccel += force.y*math.cos(force.y_rot_angle)
+            self.zaccel += force.z*math.cos(force.z_rot_angle)
         self.xaccel /= self.mass
         self.yaccel /= self.mass
         self.zaccel /= self.mass
         return (self.xaccel, self.yaccel, self.zaccel)
+
+    def calculate_angular_accel(self) -> tuple:
+        """
+        Calculates and sets the object's angular acceleration for each dimension.
+
+        Adds all the newtons of force for each dimension from :attr:`forces`, then divides each result by the :attr:`moment_of_inertia`.
+
+        This is called when a :meth:`tick` is called. Angular acceleration can be updated manually by calling this function.
+
+        Returns
+        -------
+        tuple( :class:`float`, :class:`float`, :class:`float`)
+            The angular acceleration of the 3 dimensions in the form: (x, y, z)
+
+        Raises
+        ------
+        :exc:`MomentOfInertiaZeroError`
+            PhysicsObjects cannot have a moment of inertia of ``0``. Prevents from dividing by ``0``.
+        """
+
+        if self.moment_of_inertia == 0:
+            raise MomentOfInertiaZeroError("PhysicsObjects cannot have a moment of inertia of 0.")
+
+        self.x_angular_accel = 0
+        self.y_angular_accel = 0
+        self.z_angular_accel = 0
+        for force in self.forces:
+            force.calculate_torque()
+            self.x_angular_accel =+ force.x_torque
+            self.y_angular_accel =+ force.y_torque
+            self.z_angular_accel =+ force.z_torque
+
+        self.x_angular_accel /= self.moment_of_inertia
+        self.y_angular_accel /= self.moment_of_inertia
+        self.z_angular_accel /= self.moment_of_inertia
+
+        return (self.x_angular_accel, self.y_angular_accel, self.z_angular_accel)
 
     def apply_force(self, new_force):
         """
