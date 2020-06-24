@@ -8,13 +8,13 @@ Welcome to pysics's documentation!
 
 .. toctree::
     :maxdepth: 2
-    :caption: Contents:
 
     basics
     accuracy
     collisions
     rotation
     reference
+
 
 Indices and tables
 ==================

@@ -63,3 +63,5 @@ html_css_files = [
 ]
 
 autodoc_member_order = 'bysource'
+
+master_doc = 'index'
