@@ -42,6 +42,30 @@ class PhysicsObject():
         The object's velocity on the z axis. Defaults to ``0.0`` if not provided.
         North is positive, South is negative.
 
+    x_orientation: :class:`float`
+        The object's initial orientation on the x axis in radians.
+        Defaults to ``0.0`` if not provided.
+
+    y_orientation: :class:`float`
+        The object's initial orientation on the y axis in radians.
+        Defaults to ``0.0`` if not provided.
+
+    z_orientation: :class:`float`
+        The object's initial orientation on the z axis in radians.
+        Defaults to ``0.0`` if not provided.
+
+    x_angular_vel: :class:`float`
+        The object's initial angular velocity on the x axis in radians per second.
+        Defaults to ``0.0`` if not provided.
+
+    y_angular_vel: :class:`float`
+        The object's initial angular velocity on the y axis in radians per second.
+        Defaults to ``0.0`` if not provided.
+
+    z_angular_vel: :class:`float`
+        The object's initial angular velocity on the z axis in radians per second.
+        Defaults to ``0.0`` if not provided.
+
     forces: list[:class:`pysics.force.Force`]
         The forces that will act on this object. Defaults to no forces.
         Useful for creating many PhysicsObjects.
@@ -74,28 +98,55 @@ class PhysicsObject():
         North is positive, South is negative.
 
     xvel: :class:`float`
-        This object's velocity on the x axis in meters per second.
+        This object's translational velocity on the x axis in meters per second.
         East is positive, West is negative.
 
     yvel: :class:`float`
-        This object's velocity on the y xis in meters per second.
+        This object's translational velocity on the y xis in meters per second.
         Up is positive, Down is negatives.
 
     zvel: :class:`float`
-        This object's velocity on the z axis in meters per second.
+        This object's translational velocity on the z axis in meters per second.
         North is positive, South is negative.
 
     xaccel: :class:`float`
-        This object's acceleration on the x axis in meters per second^2.
+        This object's translational acceleration on the x axis in meters per second^2.
         East is positive, West is negaitve.
 
     yaccel: :class:`float`
-        This object's acceleration on the y axis in meters per second^2.
+        This object's translational acceleration on the y axis in meters per second^2.
         Up is positive, Down is negaitve.
 
     zaccel: :class:`float`
-        This object's acceleration on the z axis in meters per second^2.
+        This object's translational acceleration on the z axis in meters per second^2.
         North is positive, South is negaitve.
+
+    x_orientation: :class:`float`
+        The object's orientation on the x axis in radians.
+
+    y_orientation: :class:`float`
+        The object's orientation on the y axis in radians.
+
+    z_orientation: :class:`float`
+        The object's orientation on the z axis in radians.
+
+    x_angular_vel: :class:`float`
+        The object's angular velocity on the x axis in radians per second.
+
+    y_angular_vel: :class:`float`
+        The object's angular velocity on the y axis in radians per second.
+
+    z_angular_vel: :class:`float`
+        The object's angular velocity on the z axis in radians per second.
+
+    x_angular_accel: :class:`float`
+        The object's angular acceleration on the x axis in radians per second^2.
+
+    y_angular_accel: :class:`float`
+        The object's angular acceleration on the y axis in radians per second^2.
+
+    z_angular_accel: :class:`float`
+        The object's angular acceleration on the z axis in radians per second^2.
 
     Raises
     ------

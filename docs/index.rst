@@ -13,6 +13,7 @@ Welcome to pysics's documentation!
     basics
     accuracy
     collisions
+    rotation
     reference
 
 Indices and tables
