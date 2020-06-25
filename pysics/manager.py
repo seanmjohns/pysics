@@ -18,16 +18,21 @@ class PhysicsManager():
         All the objects within this universe. 
         Ticks pass for all objects when :meth:`tick` is called.
 
-    tick_length: :class:`double`
+    tick_length: :class:`float`
         The configured value of how many seconds a tick is.
         Recommended to be small for games to reduce/prevent collision issues.
         Yes, time can move backwards.
+
+    time_passed: :class:`float`
+        The amount of time, in seconds, that has passed in this universe.
+        Not necessarily the same for all objects within this universe (in case objects are within multiple universes, or an object is ticked individually)
 
     """
 
     def __init__(self, tick_length=1):
         self.objects = []
         self.tick_length = tick_length
+        self.time_passed = 0.0 #seconds
 
     def tick(self, tick_length=None):
         """Make a single physics tick pass for all objects in this universe. 
@@ -45,9 +50,11 @@ class PhysicsManager():
 
         """
         
-        if tick_length is None: tick_length = self.tick_length #If tick length is 0, that means no tick length was given
+        if tick_length is None: tick_length = self.tick_length #If tick length is None, that means no tick length was given
         for obj in self.objects:
             obj.tick(tick_length)
+
+        time_passed += tick_length
 
     def tick_object(self, obj: PhysicsObject):
         """

@@ -73,6 +73,9 @@ class PhysicsObject():
     mass: :class:`float`
         The mass of this object. Defaults to 1 kilogram (in case you don't want to deal with mass)
 
+    moment_if_inertia: :class:`float`
+        The moment of inertia of this object (how easily the object rotates). Defaults to 1 kg*m.
+
 
     Attributes
     ----------
@@ -84,6 +87,9 @@ class PhysicsObject():
 
     mass: :class:`float`
         This object's mass.
+
+    moment_of_inertia: :class:`float`
+        This object's moment of inertia (how easily it can rotate)
 
     xpos: :class:`float`
         This object's position on the x axis in meters.
@@ -148,6 +154,9 @@ class PhysicsObject():
     z_angular_accel: :class:`float`
         The object's angular acceleration on the z axis in radians per second^2.
 
+    time_passed: :class:`float`
+        The amount of time, in seconds, that has passed for this object (total time over all ticks).
+
     Raises
     ------
     :exc:`MassOfZeroError` 
@@ -192,6 +201,8 @@ class PhysicsObject():
         self.mass = mass #Having altered mass may not be desired in some games, so mass is defaulted to 1 kilogram
         self.moment_of_inertia = moment_of_inertia #In kg*m^2
 
+        self.time_passed = 0.0 #seconds
+
         self.calculate_accel()
         self.calculate_angular_accel()
 
@@ -232,12 +243,11 @@ class PhysicsObject():
         self.y_orientation += self.y_angular_vel*tick_length + (1/2)*(self.y_angular_accel)*(pow(tick_length,2))
         self.z_orientation += self.z_angular_vel*tick_length + (1/2)*(self.z_angular_accel)*(pow(tick_length,2))
 
-        print(self.x_orientation)
-        
-
         self.x_angular_vel += (self.x_angular_accel)*(tick_length)
         self.y_angular_vel += (self.y_angular_accel)*(tick_length)
         self.z_angular_vel += (self.z_angular_accel)*(tick_length)
+
+        time_passed += tick_length #Time has passed
 
         #acceleration does not change until the net force (or net torque for angular acceleration) changes
 
