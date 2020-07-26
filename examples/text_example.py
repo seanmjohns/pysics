@@ -4,10 +4,8 @@ sys.path.insert(0, os.path.abspath('..'))
 from pysics.manager import PhysicsManager
 from pysics.force import Force
 from pysics import force
-from pysics.physics_obj import PhysicsObject
+from pysics.obj import PhysicsObject
 from pysics import pysics
-
-
 
 tick_length = 1 #1 tick = 1 second
 pysics.game_mode = True #Do less precise calculations

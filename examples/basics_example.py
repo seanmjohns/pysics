@@ -3,7 +3,7 @@ import sys, os
 sys.path.insert(0, os.path.abspath('..'))
 
 from pysics.manager import PhysicsManager
-from pysics.physics_obj import PhysicsObject
+from pysics.obj import PhysicsObject
 from pysics.force import Force
 
 # The tick_length for this universe should be 1/10 of a second

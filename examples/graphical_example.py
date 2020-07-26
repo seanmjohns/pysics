@@ -11,7 +11,7 @@ from pygame import Color
 
 #pysics
 from pysics.manager import PhysicsManager
-from pysics.physics_obj import PhysicsObject
+from pysics.obj import PhysicsObject
 from pysics.force import Force
 from pysics import force
 from pysics import pysics

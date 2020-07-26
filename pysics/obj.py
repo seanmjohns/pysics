@@ -73,8 +73,11 @@ class PhysicsObject():
     mass: :class:`float`
         The mass of this object. Defaults to 1 kilogram (in case you don't want to deal with mass)
 
-    moment_if_inertia: :class:`float`
+    moment_of_inertia: :class:`float`
         The moment of inertia of this object (how easily the object rotates). Defaults to 1 kg*m.
+
+    time_passed: :class:`float`
+        The total amount of time, in seconds, that has passed for this object.
 
 
     Attributes
@@ -164,7 +167,7 @@ class PhysicsObject():
 
     """
 
-    def __init__(self, name, xpos=0.0, ypos=0.0, zpos=0.0, xvel=0.0, yvel=0.0, zvel=0.0, x_orientation=0.0, y_orientation=0.0, z_orientation=0.0, x_angular_vel=0.0, y_angular_vel=0.0, z_angular_vel=0.0, forces=[], mass=1.0, moment_of_inertia=1.0):
+    def __init__(self, name, xpos=0.0, ypos=0.0, zpos=0.0, xvel=0.0, yvel=0.0, zvel=0.0, x_orientation=0.0, y_orientation=0.0, z_orientation=0.0, x_angular_vel=0.0, y_angular_vel=0.0, z_angular_vel=0.0, forces=[], mass=1.0, moment_of_inertia=1.0, time_passed=0.0):
         if mass == 0:
             raise MassOfZeroError("PhysicsObjects cannot have a mass of 0.")
         if moment_of_inertia == 0:
@@ -201,7 +204,7 @@ class PhysicsObject():
         self.mass = mass #Having altered mass may not be desired in some games, so mass is defaulted to 1 kilogram
         self.moment_of_inertia = moment_of_inertia #In kg*m^2
 
-        self.time_passed = 0.0 #seconds
+        self.time_passed = time_passed #seconds
 
         self.calculate_accel()
         self.calculate_angular_accel()
@@ -247,7 +250,7 @@ class PhysicsObject():
         self.y_angular_vel += (self.y_angular_accel)*(tick_length)
         self.z_angular_vel += (self.z_angular_accel)*(tick_length)
 
-        time_passed += tick_length #Time has passed
+        self.time_passed += tick_length #Time has passed
 
         #acceleration does not change until the net force (or net torque for angular acceleration) changes
 

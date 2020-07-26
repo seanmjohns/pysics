@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # pysics
 from pysics.manager import PhysicsManager
 from pysics.force import Force
-from pysics.physics_obj import PhysicsObject
+from pysics.obj import PhysicsObject
 from pysics import force
 
 # Setting up pygame

@@ -12,6 +12,9 @@ class PhysicsManager():
         The amount of time, in seconds, a tick is for this universe. This can be changed after initialization.
         Time can move backwards.
 
+    time_passed: :class:`float`
+        The amount of time, in seconds, that has passed in this manager's universe.
+
     Attributes
     ----------
     objects: List[:class:`pysics.physics_obj.PhysicsObject`]
@@ -29,10 +32,10 @@ class PhysicsManager():
 
     """
 
-    def __init__(self, tick_length=1):
+    def __init__(self, tick_length=1.0, time_passed=0.0):
         self.objects = []
         self.tick_length = tick_length
-        self.time_passed = 0.0 #seconds
+        self.time_passed = time_passed #seconds
 
     def tick(self, tick_length=None):
         """Make a single physics tick pass for all objects in this universe. 
@@ -54,7 +57,7 @@ class PhysicsManager():
         for obj in self.objects:
             obj.tick(tick_length)
 
-        time_passed += tick_length
+        self.time_passed += tick_length
 
     def tick_object(self, obj: PhysicsObject):
         """
