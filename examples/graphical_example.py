@@ -84,7 +84,7 @@ def main():
                 sys.exit(0)
 
         #Determine if the ball has hit a boundary (account for ball radius) - Apply an instantaneous (really its one tiny tick) normal force against it if so
-        if ball.xpos + ball_radius <= 0:
+        if ball.xpos <= 0:
             #Impulse = change in momentum
             #Impulse = force*change in time
             #Change in momentum = change in velocity * mass (mass is constant)
@@ -102,7 +102,7 @@ def main():
             ball.tick(wall_bump_tick_length)
             ball.remove_force(left)
 
-        if ball.xpos + ball_radius >= width:
+        if ball.xpos + ball_radius*2 >= width:
             right = None
             if tick_length < 0:
                 right = Force("right side normal force", x=(abs(2*ball.xvel)*ball.mass)/wall_bump_tick_length)
@@ -116,7 +116,7 @@ def main():
         #if ball_screen_y - ball_raidus <= 0:
         #    ball.apply_force("top side normal force", y=(abs(ball.yvel)*ball.mass/tick_length))
 
-        if ball_screen_y - ball_radius >= height:
+        if ball_screen_y + ball_radius*2 >= height:
             bottom = None
             friction = None
             if tick_length < 0:
