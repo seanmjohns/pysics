@@ -161,6 +161,7 @@ class Stickman():
 def main():
 
     cursor_grab_distance = 8; #pixels
+    grabbed_stickman = False
 
     num_stickmen = 2
 
@@ -184,7 +185,6 @@ def main():
         mouse_y = pygame.mouse.get_pos()[1]
         mouse_x = pygame.mouse.get_pos()[0]
         if pygame.mouse.get_pressed()[0]:
-            grabbed_stickman = False
             for stickman in stickmen:
                 if not grabbed_stickman:
                     for part in stickman.body_parts:
@@ -197,6 +197,7 @@ def main():
                 else: break
 
         else:
+            grabbed_stickman = False
             for stickman in stickmen:
                 stickman.part_grabbed = False
                 for part in stickman.body_parts:
