@@ -1,0 +1,13 @@
+0.1.1:
+- Additions:
+  - `PhysicsManager`s and `PhysicsObject`s now track how much time has passed
+  - Examples:
+    - `text_example.py`
+    - `basics_example.py` (Used in the documentation)
+    - `graphical_example.py` (Demonstrates slowing and reversal of time, and angular manipulation)
+    - `trebuchet_launch_example.py` (A very bad example created as a speedrun)
+    - `stickman_example.py` (A loose copy of DanBall's StickRanger's stickmen)
+  - Documentation:
+    - The Basics: How universes, objects, forces, and time interact
+    - Accuracy of Pysics in terms of collision accuracy and general accuracy
+    - Module Reference Page
