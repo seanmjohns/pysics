@@ -99,7 +99,7 @@ class Stickman():
         self.head = BodyPart(name="stickman" + str(self.stickman_id) + " head", xpos=head_pos[0], ypos=head_pos[1], color=(0,0,255))
         self.body_parts.append(self.head)
 
-        self.neck = BodyPart(name="stickman" + str(self.stickman_id) + " neck", xpos=self.head.ypos, ypos=self.head.ypos+self.bpd, color=(0,0,255))
+        self.neck = BodyPart(name="stickman" + str(self.stickman_id) + " neck", xpos=self.head.xpos, ypos=self.head.ypos+self.bpd, color=(0,0,255))
         self.body_parts.append(self.neck)
 
         self.left_hand = BodyPart(name="stickman" + str(self.stickman_id) + " left_hand", xpos=self.neck.xpos-self.bpd, ypos=self.neck.ypos, color=(0,255,0))
