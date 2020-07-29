@@ -10,7 +10,7 @@ A game physics engine for python using real physics.
 
 # Pysics Plans
 
-The current plans for pysics can be viewed on [Google Docs](https://docs.google.com/document/d/1gRNRXh5bgGkU7FRqkxjY-hBrnnAWIawSgEYROsuk6t4/edit).
+The current plans for pysics can be viewed on [GitHub Projects](https://github.com/seanmjohns/pysics/projects/1).
 If you want to contribute to the list, [open an issue](https://github.com/seanmjohns/pysics/issues/new).
 
 # Documentation
