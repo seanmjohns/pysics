@@ -32,8 +32,8 @@ class PhysicsManager():
 
     """
 
-    def __init__(self, tick_length=1.0, time_passed=0.0):
-        self.objects = []
+    def __init__(self, objects=[], tick_length=1.0, time_passed=0.0):
+        self.objects = objects.copy()
         self.tick_length = tick_length
         self.time_passed = time_passed #seconds
 

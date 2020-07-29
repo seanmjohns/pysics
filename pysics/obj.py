@@ -200,7 +200,7 @@ class PhysicsObject():
         self.z_angular_accel = 0.0 #In m/s^2
 
 
-        self.forces = forces
+        self.forces = forces.copy()
         self.mass = mass #Having altered mass may not be desired in some games, so mass is defaulted to 1 kilogram
         self.moment_of_inertia = moment_of_inertia #In kg*m^2
 
@@ -233,7 +233,6 @@ class PhysicsObject():
         self.xpos += self.xvel*tick_length + (1/2)*(self.xaccel)*(pow(tick_length,2))
         self.ypos += self.yvel*tick_length + (1/2)*(self.yaccel)*(pow(tick_length,2))
         self.zpos += self.zvel*tick_length + (1/2)*(self.zaccel)*(pow(tick_length,2))
-
 
         #v = v(initial) + (a)(t) - on a single axis
         self.xvel += (self.xaccel)*(tick_length)
@@ -437,9 +436,9 @@ class PhysicsObject():
 
         """
 
-        for force in forces:
+        for force in self.forces:
             if force.name == name:
-                forces.remove(force)
+                self.forces.remove(force)
 
     def clear_forces(self) -> list:
         """
