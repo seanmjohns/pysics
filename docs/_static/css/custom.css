@@ -1,0 +1,62 @@
+.document {
+    width: 65% !important;
+}
+
+.section > h3,
+.function > dt,
+.data > dt,
+.class > dt,
+.exception > dt,
+.attribute > dt,
+.method > dt {
+    margin: 20px 0px 20px 0px;
+    padding: 5px 5px 5px 5px !important;
+    border-left: 2px solid;
+    background-color: #e8e8e8;
+}
+
+.section li {
+    margin: 10px 0px 10px 0px;
+}
+
+.field-list {
+    display: block !important;
+}
+
+div[role="main"] > .section > h1 {
+    margin: 0px 0px 20px 0px;
+    padding: 0px 0px 30px 0px;
+    border-bottom: 2px solid;
+}
+
+div[role="main"] > .section > .section {
+    margin: 50px 0px 50px 0px;
+    padding: 10px 30px 50px 30px !important;
+    border-left: 10px solid;
+    background-color: #f2f4f4;
+}
+
+div[role="main"] {
+    max-width: 1100px;
+}
+
+code.descname {
+    font-size: 0.90em;
+}
+
+body {
+    font-size: 15px;
+}
+
+div.body ul {
+    padding-left: 1.3em;
+    list-style: disc;
+    margin: 1em 0px;
+}
+
+dd {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    margin-left: 30px !important;
+    list-style: disc;
+}

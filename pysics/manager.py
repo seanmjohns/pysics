@@ -1,51 +1,141 @@
-from pysics.physics_obj import PhysicsObject
+from .obj import PhysicsObject
 
-from pysics.errors import NameUsedError
+from .errors import NameUsedError
 
 class PhysicsManager():
     """Represents a universe in which physics works the way it does in that universe.
-    Time (ticks) passes individually in each universe."""
+    Time (ticks) passes individually in each universe.
 
-    objects=[]
+    Parameters
+    ----------
+    tick_length: :class:`float`
+        The amount of time, in seconds, a tick is for this universe. This can be changed after initialization.
+        Time can move backwards.
 
-    tick_length = 1 #Second - For scientific calculations, use milliseconds (1000th)
+    time_passed: :class:`float`
+        The amount of time, in seconds, that has passed in this manager's universe.
 
-    gravitational_acceleration = 9.80665 
+    Attributes
+    ----------
+    objects: List[:class:`pysics.physics_obj.PhysicsObject`]
+        All the objects within this universe. 
+        Ticks pass for all objects when :meth:`tick` is called.
 
-    game_mode = True #Whether or not to use less precise and optimised calculations for games, but not for scientific simulations
+    tick_length: :class:`float`
+        The configured value of how many seconds a tick is.
+        Recommended to be small for games to reduce/prevent collision issues.
+        Yes, time can move backwards.
 
-    def __init__(self, tick_length=1, gravitational_constant=9.80665, game_mode=True):
+    time_passed: :class:`float`
+        The amount of time, in seconds, that has passed in this universe.
+        Not necessarily the same for all objects within this universe (in case objects are within multiple universes, or an object is ticked individually)
+
+    """
+
+    def __init__(self, objects=[], tick_length=1.0, time_passed=0.0):
+        self.objects = objects.copy()
         self.tick_length = tick_length
-        self.gravitational_constant = gravitational_constant
-        self.game_mode = game_mode
+        self.time_passed = time_passed #seconds
 
-    def tick(self, tick_length=tick_length):
-        """Make a single physics tick pass for all objects in this universe.
-        This is not recommended if you are creating a game. In the case of game creation, you should tick each object manually."""
+    def tick(self, tick_length=None):
+        """Make a single physics tick pass for all objects in this universe. 
+
+        If tick_length is not supplied, then use the universe's tick length.
+
+        Parameters
+        ----------
+        tick_length: :class:`float`
+            The amount of time this tick lasts. 
+            
+            .. note::
+
+                Time *can* move backwards.
+
+        """
+        
+        if tick_length is None: tick_length = self.tick_length #If tick length is None, that means no tick length was given
         for obj in self.objects:
-            obj.tick(self.tick_length)
+            obj.tick(tick_length)
+
+        self.time_passed += tick_length
 
     def tick_object(self, obj: PhysicsObject):
-        """Make a single physics tick pass for a single object."""
+        """
+        Make a single physics tick pass for a single object. The tick_length is this manager's configured length.
+
+        This can be achieved by calling :meth:`pysics.physics_obj.PhysicsObject.tick` and providing the configured tick_length.
+
+        Parameters
+        ----------
+        obj: :class:`pysics.physics_obj.PhysicsObject`
+            The object that is to be ticked.
+
+        """
         obj.tick(self.tick_length)
 
-    def tick_length(self) -> float:
-        """Returns the tick_length (in seconds)."""
-        return self.tick_length
-    
-    def add_object(self, obj:PhysicsObject):
-        """Add an object to this universe."""
-        for obj in self.objects:
-            if obj.name == name:
-                raise NameUsedError(name, "PhysicsObject")
-                return
+    def add_object(self, ph_obj:PhysicsObject):
+        """
 
-        self.objects.append(obj)
+        Add an object to this universe. Adds the object to the end of the ``objects`` list.
+
+        Parameters
+        ----------
+        ph_obj: :class:`pysics.physics_obj.PhysicsObject`
+            The object to be added to this universe.
+
+        Raises
+        ------
+        :exc:`pysics.errors.NameUsedError`
+            There cannot be two objects in one universe with the same name.
+
+        """
+        for obj in self.objects: #Make sure its name is not already used
+            if obj.name == ph_obj.name:
+                raise NameUsedError("There cannot be two objects within the same universe with the same name.")
+
+        self.objects.append(ph_obj)
 
     def remove_object(self, obj:PhysicsObject):
+        """
+        Remove a physics object using the instance itself.
+
+        Parameters
+        ----------
+        obj: :class:`pysics.physics_obj.PhysicsObject`
+            The object to remove from this universe (the instance itself).
+
+        """
         self.objects.remove(obj)
 
     def remove_object_by_name(name:str):
+        """
+
+        Remove a physics object using its name.
+
+        If there is no object with the given name, fails silently.
+
+        Parameters
+        ----------
+        name: :class:`str`
+            The name of the object to be removed.
+
+        """
         for obj in self.objects:
             if obj.name == name:
                 self.objects.remove(obj)
+
+    def clear(self) -> tuple:
+        """
+
+        Remove all physics objects from the universe. Clears the objects list.
+
+        Returns
+        -------
+        List[:class:`pysics.physics_obj.PhysicsObject`]
+            All the objects that were previously a part of this universe.
+            Useful for transferring all objects to a different universe.
+
+        """
+        objects_copy = self.objects
+        self.objects.clear()
+        return objects_copy
