@@ -44,8 +44,9 @@ pysics.game_mode = True
 manager = PhysicsManager(tick_length=tick_length)
 manager2 = PhysicsManager(tick_length=tick_length)
 
+boundary_coef_of_friction = 0.75
 background_coef_of_friction = 0.5
-body_part_spring_constant = 1
+body_part_spring_constant = 0.75
 
 class BodyPart(PhysicsObject):
 
@@ -237,19 +238,27 @@ def main():
                 part.apply_body_part_forces()
 
             #Apply friction when the bodies hit the walls (and stop them on their opposite axes)
+            #(2*xvel*mass)/tick_length
             for part in stickman.body_parts:
-                if part.xpos <= 0 and part.xvel <= 0: #allow the part to come back on the screen
+                part.remove_force_by_name("left wall friction")
+                if part.xpos <= 0:
                     part.xpos = 0
-                    part.xvel = 0
-                elif part.xpos >= width and part.xvel >= 0:
+                    if part.xvel < 0:
+                        part.xvel = 0
+                elif part.xpos >= width:
                     part.xpos = width
-                    part.xvel = 0
-                if part.ypos <= 0 and part.yvel <= 0:
+                    if part.xvel > 0:
+                        part.xvel = 0
+                if part.ypos <= 0:
                     part.ypos = 0
-                    part.yvel = 0
-                elif part.ypos >= height-floor and part.yvel >= 0:
+                    if part.yvel < 0:
+                        part.yvel = 0
+                elif part.ypos >= height-floor:
                     part.ypos = height-floor
-                    part.yvel = 0
+                    if part.yvel > 0: #we should allow it to escape the boundary
+                        part.yvel = 0
+                    friction = Force("left wall friction", x=(boundary_coef_of_friction)*(2*-part.xvel)*part.mass)
+                    part.apply_force(friction)
 
         #Draw the background (white)
         window.fill((255, 255, 255))
