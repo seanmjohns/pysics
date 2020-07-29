@@ -1,3 +1,7 @@
+0.1.2:
+- Additions:
+ - Light and Dark logos
+
 0.1.1:
 - Additions:
   - `PhysicsManager`s and `PhysicsObject`s now track how much time has passed
