@@ -15,13 +15,4 @@ If you want to contribute to the list, [open an issue](https://github.com/seanmj
 
 # Documentation
 
-The documentation for Pysics is not web hosted yet.
-
-You can build the documentation to view it locally:
-1. Install `python3-sphinx` (Python Documentation Generator) using your system package manager
-2. After installing sphinx-doc, run the following commands to build and view the documentation:
-```
-cd docs
-make html
-open _build/html/index.html #Or open the html file another way, such as typing the file path into your browser
-```
+The documentation can be viewed at [seanmjohns1.github.io](https://seanmjohns.github.io/projects/pysics/docs/index.html)
