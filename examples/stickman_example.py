@@ -92,30 +92,32 @@ class Stickman():
 
     bpd = 10 #body part distance in pixels
     head_radius = 2
-    
+
     def __init__(self, head_pos:tuple, stickman_id):
         self.part_grabbed = False
         self.body_parts = []
         self.stickman_id = stickman_id
-        self.head = BodyPart(name="stickman" + str(self.stickman_id) + " head", xpos=head_pos[0], ypos=head_pos[1], color=(0,0,255))
+        self.head = BodyPart(name="stickman" + str(self.stickman_id) + " head", bpd=self.bpd, xpos=head_pos[0], ypos=head_pos[1], color=(0,0,255))
         self.body_parts.append(self.head)
+        self.on_ground = False
+        self.waist_foot_distance_axis = math.pow(math.pow(self.bpd,2)/2,1/2) #THe distance on each axis the waist is from each foot (and vice-versa)
 
-        self.neck = BodyPart(name="stickman" + str(self.stickman_id) + " neck", xpos=self.head.xpos, ypos=self.head.ypos+self.bpd, color=(0,0,255))
+        self.neck = BodyPart(name="stickman" + str(self.stickman_id) + " neck", bpd=self.bpd, xpos=self.head.xpos, ypos=self.head.ypos+self.bpd, color=(0,0,255))
         self.body_parts.append(self.neck)
 
-        self.left_hand = BodyPart(name="stickman" + str(self.stickman_id) + " left_hand", xpos=self.neck.xpos-self.bpd, ypos=self.neck.ypos, color=(0,255,0))
+        self.left_hand = BodyPart(name="stickman" + str(self.stickman_id) + " left_hand", bpd=self.bpd, xpos=self.neck.xpos-self.bpd, ypos=self.neck.ypos, color=(0,255,0))
         self.body_parts.append(self.left_hand)
         
-        self.right_hand = BodyPart(name="stickman" + str(self.stickman_id) + " right_hand", xpos=self.neck.xpos+self.bpd, ypos=self.neck.ypos, color=(255,0,0))
+        self.right_hand = BodyPart(name="stickman" + str(self.stickman_id) + " right_hand", bpd=self.bpd, xpos=self.neck.xpos+self.bpd, ypos=self.neck.ypos, color=(255,0,0))
         self.body_parts.append(self.right_hand)
 
-        self.waist = BodyPart(name="stickman" + str(self.stickman_id) + " waist", xpos=self.neck.xpos, ypos=self.neck.ypos+self.bpd, color=(0,0,255))
+        self.waist = BodyPart(name="stickman" + str(self.stickman_id) + " waist", bpd=self.bpd, xpos=self.neck.xpos, ypos=self.neck.ypos+self.bpd, color=(0,0,255))
         self.body_parts.append(self.waist)
 
-        self.left_foot = BodyPart(name="stickman" + str(self.stickman_id) + " left_foot", xpos=self.waist.xpos-math.pow(math.pow(self.bpd,2)/2,1/2), ypos=self.waist.ypos+math.pow(math.pow(self.bpd,2)/2,1/2), color=(0,255,0))
+        self.left_foot = BodyPart(name="stickman" + str(self.stickman_id) + " left_foot", bpd=self.bpd, xpos=self.waist.xpos-self.waist_foot_distance_axis, ypos=self.waist.ypos+self.waist_foot_distance_axis, color=(0,255,0))
         self.body_parts.append(self.left_foot)
 
-        self.right_foot = BodyPart(name="stickman" + str(self.stickman_id) + " right_foot", xpos=self.waist.xpos+math.pow(math.pow(self.bpd,2)/2,1/2), ypos=self.waist.ypos+math.pow(math.pow(self.bpd,2)/2,1/2), color=(255,0,0))
+        self.right_foot = BodyPart(name="stickman" + str(self.stickman_id) + " right_foot", bpd=self.bpd, xpos=self.waist.xpos+self.waist_foot_distance_axis, ypos=self.waist.ypos+self.waist_foot_distance_axis, color=(255,0,0))
         self.body_parts.append(self.right_foot)
 
         """self.head = BodyPart(name="head", xpos=30, ypos=27)
@@ -164,7 +166,7 @@ def main():
     cursor_grab_distance = 8; #pixels
     grabbed_stickman = False
 
-    num_stickmen = 2
+    num_stickmen = 1
 
     stickmen = []
     for i in range(1,num_stickmen+1): #Create as many stickmen as you want
@@ -233,14 +235,15 @@ def main():
                 y_force = (1/2)*(0.47)*(-part.yvel)*(1.225)*(1)
                 part.apply_force(Force("air_resistance", x=x_force, y=y_force))
 
-            #Make the body parts go towards each other if they are too far apart
-            for part in stickman.body_parts:
-                part.apply_body_part_forces()
+            #Make the body parts go towards each other if they are too far apart and if not on ground
+            if not stickman.on_ground or stickman.part_grabbed:
+                for part in stickman.body_parts:
+                    part.apply_body_part_forces()
 
             #Apply friction when the bodies hit the walls (and stop them on their opposite axes)
             #(2*xvel*mass)/tick_length
             for part in stickman.body_parts:
-                part.remove_force_by_name("left wall friction")
+                part.remove_force_by_name("floor friction")
                 if part.xpos <= 0:
                     part.xpos = 0
                     if part.xvel < 0:
@@ -257,8 +260,93 @@ def main():
                     part.ypos = height-floor
                     if part.yvel > 0: #we should allow it to escape the boundary
                         part.yvel = 0
-                    friction = Force("left wall friction", x=(boundary_coef_of_friction)*(2*-part.xvel)*part.mass)
+                    friction = Force("floor friction", x=(boundary_coef_of_friction)*(2*-part.xvel)*part.mass)
+                    if "foot" in part.name:
+                        friction.x = friction.x*2 #So that he can stand
                     part.apply_force(friction)
+
+            #remove standing forces
+            for part in stickman.body_parts:
+                part.remove_force_by_name("stand force")
+
+
+            #If not grabbed and if the feet are on the ground, make the body parts go to normal positions
+            if not stickman.part_grabbed:
+                which_foot = -1 #0=left, 1=right
+                if stickman.left_foot.ypos >= height-floor:
+                    stickman.on_ground = True
+                    which_foot = 0
+                elif stickman.right_foot.ypos >= height-floor:
+                    stickman.on_ground = True
+                    which_foot = 1
+                else:
+                    stickman.on_ground = False
+
+                if stickman.on_ground and not stickman.part_grabbed:
+                    multiplier = 1
+                    if which_foot == 0:
+                        x = stickman.left_foot.xpos+stickman.waist_foot_distance_axis*2
+                        y = stickman.left_foot.ypos
+                        #No y changes
+                        force_x = (x-stickman.right_foot.xpos)*multiplier
+                        force_y = (y-stickman.right_foot.ypos)*multiplier - grav_force
+                        stickman.right_foot.apply_force(Force(name="stand force", x=force_x, y=force_y)) #right foot
+                        x = stickman.left_foot.xpos+stickman.waist_foot_distance_axis
+                        y = stickman.left_foot.ypos-stickman.waist_foot_distance_axis
+                        force_x = (x-stickman.waist.xpos)*multiplier
+                        force_y = (y-stickman.waist.ypos)*multiplier - grav_force
+                        stickman.waist.apply_force(Force(name="stand force", x=force_x, y=force_y)) #waist
+                        #No x changes
+                        y -= stickman.bpd
+                        force_x = (x-stickman.neck.xpos)*multiplier
+                        force_y = (y-stickman.neck.ypos)*multiplier - grav_force
+                        stickman.neck.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Neck
+                        x += stickman.bpd
+                        #No y changes
+                        force_x = (x-stickman.left_hand.xpos)*multiplier
+                        force_y = (y-stickman.left_hand.ypos)*multiplier - grav_force
+                        stickman.left_hand.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Left hand
+                        x -= stickman.bpd*2
+                        #No y changes
+                        force_x = (x-stickman.right_hand.xpos)*multiplier
+                        force_y = (y-stickman.right_hand.ypos)*multiplier - grav_force
+                        stickman.right_hand.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Right hand
+                        x += stickman.bpd
+                        y -= stickman.bpd
+                        force_x = (x-stickman.head.xpos)*multiplier
+                        force_y = (y-stickman.head.ypos)*multiplier - grav_force
+                        stickman.head.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Head
+                    elif which_foot == 1:
+                        x = stickman.right_foot.xpos-stickman.waist_foot_distance_axis*2
+                        y = stickman.right_foot.ypos
+                        force_x = (x-stickman.left_foot.xpos)*multiplier
+                        force_y = (y-stickman.left_foot.ypos)*multiplier - grav_force
+                        stickman.left_foot.apply_force(Force(name="stand force", x=force_x, y=force_y)) #left foot
+                        x = stickman.right_foot.xpos-stickman.waist_foot_distance_axis
+                        y = stickman.right_foot.ypos-stickman.waist_foot_distance_axis
+                        force_x = (x-stickman.waist.xpos)*multiplier
+                        force_y = (y-stickman.waist.ypos)*multiplier - grav_force
+                        stickman.waist.apply_force(Force(name="stand force", x=force_x, y=force_y)) #waist
+                        #No x changes
+                        y -= stickman.bpd
+                        force_x = (x-stickman.neck.xpos)*multiplier
+                        force_y = (y-stickman.neck.ypos)*multiplier
+                        stickman.neck.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Neck
+                        x += stickman.bpd
+                        #No y changes
+                        force_x = (x-stickman.left_hand.xpos)*multiplier
+                        force_y = (y-stickman.left_hand.ypos)*multiplier
+                        stickman.left_hand.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Left hand
+                        x -= stickman.bpd*2
+                        #No y changes
+                        force_x = (x-stickman.right_hand.xpos)*multiplier
+                        force_y = (y-stickman.right_hand.ypos)*multiplier
+                        stickman.right_hand.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Right hand
+                        x += stickman.bpd
+                        y -= stickman.bpd
+                        force_x = (x-stickman.head.xpos)*multiplier
+                        force_y = (y-stickman.head.ypos)*multiplier - grav_force
+                        stickman.head.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Head
 
         #Draw the background (white)
         window.fill((255, 255, 255))
