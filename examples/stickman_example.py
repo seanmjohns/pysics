@@ -91,14 +91,14 @@ class BodyPart(PhysicsObject):
 class Stickman():
 
     bpd = 10 #body part distance in pixels
-    head_radius = 2
+    head_radius = 4
 
     def __init__(self, left_foot_pos:tuple, stickman_id):
         self.part_grabbed = False
         self.body_parts = []
         self.stickman_id = stickman_id
-        self.on_ground = False
         self.knee_foot_distance_axis = math.pow(math.pow(self.bpd,2)/2,1/2) #THe distance on each axis the waist is from each foot (and vice-versa)
+        self.standing_foot = None
 
         self.head = None
         self.neck = None
@@ -271,7 +271,7 @@ def main():
 
             #Make the body parts go towards each other if they are too far apart and if not on ground
             for part in stickman.body_parts: #Hands will still expreience body part forces even when standing
-                if "hand" in part.name or "elbow" in part.name or (not stickman.on_ground or stickman.part_grabbed): 
+                if "hand" in part.name or "elbow" in part.name or (stickman.standing_foot == None or stickman.part_grabbed): 
                     part.apply_body_part_forces()
 
             #Apply friction when the bodies hit the walls (and stop them on their opposite axes)
@@ -305,36 +305,37 @@ def main():
 
             #If not grabbed and if the feet are on the ground, make the body parts go to normal positions
             if not stickman.part_grabbed:
-                which_foot = -1 #0=left, 1=right
-                if stickman.left_foot.ypos >= height-floor-2:
-                    stickman.on_ground = True
-                    which_foot = 0
-                elif stickman.right_foot.ypos >= height-floor-2:
-                    stickman.on_ground = True
-                    which_foot = 1
-                else:
-                    stickman.on_ground = False
+                if stickman.standing_foot != None:
+                    if stickman.standing_foot.ypos < height-floor-2:
+                        stickman.standing_foot == None
+                if stickman.standing_foot == None:
+                    if stickman.left_foot.ypos >= height-floor-2:
+                        stickman.standing_foot = stickman.left_foot
+                    if stickman.right_foot.ypos >= height-floor-2:
+                        stickman.standing_foot = stickman.right_foot
+                    else:
+                        stickman.standing_foot = None
 
-                if stickman.on_ground and not stickman.part_grabbed:
+                if stickman.standing_foot != None and not stickman.part_grabbed:
                     for n in range(0,len(stickman.body_parts)):
                         part = stickman.body_parts[n]
                         if "hand" in part.name or "elbow" in part.name: #Elbows and arms do not experience stand forces
                             continue
-                        if which_foot == 0:
+                        if stickman.standing_foot == stickman.left_foot:
                             x = stickman.left_foot.xpos+stickman.bpd_left_foot[n][0]
                             y = stickman.left_foot.ypos+stickman.bpd_left_foot[n][1]
                             part.apply_force(Force(name="stand force", x=x-part.xpos, y=y-part.ypos))
-                        if which_foot == 1:
+                        if stickman.standing_foot == stickman.right_foot:
                             x = stickman.right_foot.xpos+stickman.bpd_right_foot[n][0]
                             y = stickman.right_foot.ypos+stickman.bpd_right_foot[n][1]
                             part.apply_force(Force(name="stand force", x=x-part.xpos, y=y-part.ypos))
             else:
-                stickman.on_ground = False
+                stickman.standing_foot = None
 
             #Reapply gravitational force where needed
             for part in stickman.body_parts:
                 part.remove_force_by_name("grav")
-                if not stickman.on_ground:
+                if stickman.standing_foot == None:
                     part.apply_force(Force("grav", y=grav_force))
 
         #Draw the background (white)
