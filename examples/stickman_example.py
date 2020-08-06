@@ -309,14 +309,11 @@ def main():
                 if stickman.left_foot.ypos >= height-floor-2:
                     stickman.on_ground = True
                     which_foot = 0
-                    print("ON GROUND")
                 elif stickman.right_foot.ypos >= height-floor-2:
                     stickman.on_ground = True
                     which_foot = 1
-                    print("ON GRROUND")
                 else:
                     stickman.on_ground = False
-                    print("NOT ON GROUND")
 
                 if stickman.on_ground and not stickman.part_grabbed:
                     for n in range(0,len(stickman.body_parts)):
