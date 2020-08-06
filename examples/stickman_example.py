@@ -236,8 +236,8 @@ def main():
                 part.apply_force(Force("air_resistance", x=x_force, y=y_force))
 
             #Make the body parts go towards each other if they are too far apart and if not on ground
-            if not stickman.on_ground or stickman.part_grabbed:
-                for part in stickman.body_parts:
+            for part in stickman.body_parts: #Hands will still expreience body part forces even when standing
+                if "hand" in part.name or (not stickman.on_ground or stickman.part_grabbed): 
                     part.apply_body_part_forces()
 
             #Apply friction when the bodies hit the walls (and stop them on their opposite axes)
@@ -262,7 +262,7 @@ def main():
                         part.yvel = 0
                     friction = Force("floor friction", x=(boundary_coef_of_friction)*(2*-part.xvel)*part.mass)
                     if "foot" in part.name:
-                        friction.x = friction.x*2 #So that he can stand
+                        friction.x = friction.x*5 #So that he can stand
                     part.apply_force(friction)
 
             #remove standing forces
@@ -301,17 +301,10 @@ def main():
                         force_x = (x-stickman.neck.xpos)*multiplier
                         force_y = (y-stickman.neck.ypos)*multiplier - grav_force
                         stickman.neck.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Neck
-                        x += stickman.bpd
-                        #No y changes
-                        force_x = (x-stickman.left_hand.xpos)*multiplier
-                        force_y = (y-stickman.left_hand.ypos)*multiplier - grav_force
-                        stickman.left_hand.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Left hand
-                        x -= stickman.bpd*2
-                        #No y changes
-                        force_x = (x-stickman.right_hand.xpos)*multiplier
-                        force_y = (y-stickman.right_hand.ypos)*multiplier - grav_force
-                        stickman.right_hand.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Right hand
-                        x += stickman.bpd
+                        #Hands only experience force to counteract gravitational force
+                        stickman.left_hand.apply_force(Force(name="stand force", y=-grav_force)) #Left hand
+                        stickman.right_hand.apply_force(Force(name="stand force", y=-grav_force)) #Right hand
+                        #no x changes
                         y -= stickman.bpd
                         force_x = (x-stickman.head.xpos)*multiplier
                         force_y = (y-stickman.head.ypos)*multiplier - grav_force
@@ -332,17 +325,10 @@ def main():
                         force_x = (x-stickman.neck.xpos)*multiplier
                         force_y = (y-stickman.neck.ypos)*multiplier
                         stickman.neck.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Neck
-                        x += stickman.bpd
-                        #No y changes
-                        force_x = (x-stickman.left_hand.xpos)*multiplier
-                        force_y = (y-stickman.left_hand.ypos)*multiplier
-                        stickman.left_hand.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Left hand
-                        x -= stickman.bpd*2
-                        #No y changes
-                        force_x = (x-stickman.right_hand.xpos)*multiplier
-                        force_y = (y-stickman.right_hand.ypos)*multiplier
-                        stickman.right_hand.apply_force(Force(name="stand force", x=force_x, y=force_y)) #Right hand
-                        x += stickman.bpd
+                        #Hands only experience force to counteract gravitational force
+                        stickman.left_hand.apply_force(Force(name="stand force", y=-grav_force)) #Left hand
+                        stickman.right_hand.apply_force(Force(name="stand force", y=-grav_force)) #Right hand
+                        #no x changes
                         y -= stickman.bpd
                         force_x = (x-stickman.head.xpos)*multiplier
                         force_y = (y-stickman.head.ypos)*multiplier - grav_force
