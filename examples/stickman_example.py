@@ -309,9 +309,9 @@ def main():
                     if stickman.standing_foot.ypos < height-floor-2:
                         stickman.standing_foot == None
                 if stickman.standing_foot == None:
-                    if stickman.left_foot.ypos >= height-floor-2:
+                    if stickman.left_foot.ypos >= height-floor-2 and stickman.left_foot.yvel >= 0:
                         stickman.standing_foot = stickman.left_foot
-                    if stickman.right_foot.ypos >= height-floor-2:
+                    if stickman.right_foot.ypos >= height-floor-2 and stickman.right_foot.yvel >= 0:
                         stickman.standing_foot = stickman.right_foot
                     else:
                         stickman.standing_foot = None
