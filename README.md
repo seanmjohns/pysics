@@ -15,4 +15,4 @@ If you want to contribute to the list, [open an issue](https://github.com/seanmj
 
 # Documentation
 
-The documentation can be viewed at [seanmjohns1.github.io](https://seanmjohns.github.io/projects/pysics/docs/index.html)
+The documentation can be viewed at [seanmjohns.github.io](https://seanmjohns.github.io/projects/pysics/docs/index.html)
