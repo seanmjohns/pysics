@@ -1,6 +1,9 @@
 0.1.2:
 - Additions:
  - Light and Dark logos
+ - stickmen in the stickman example now stand
+- Technical:
+ - Adding pysics to pypi.org
 
 0.1.1:
 - Additions:

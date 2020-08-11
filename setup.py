@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pysics-seanmjohns",
-    version="0.1.1",
+    version="0.1.2",
     author="Sean Johnson",
     author_email="seanmjohns1@gmail.com",
     description="A physics engine for python games",
