@@ -1,0 +1,5 @@
+Pysics text thickness: 10px
+Pysics letter mutual distance: 10px
+
+Engine text thickness: 5px
+Engine letter mutual distance: 5px
