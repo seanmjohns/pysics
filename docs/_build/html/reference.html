@@ -1,0 +1,1072 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pysics Reference &#8212; pysics  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Basics" href="basics.html" />
+    <link rel="prev" title="Pysics" href="welcome.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pysics-reference">
+<h1>Pysics Reference<a class="headerlink" href="#pysics-reference" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="module-pysics.manager">
+<span id="module-pysics-manager"></span><h2><em>module</em> <code class="docutils literal notranslate"><span class="pre">pysics.manager</span></code><a class="headerlink" href="#module-pysics.manager" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pysics.manager.PhysicsManager">
+<em class="property">class </em><code class="sig-prename descclassname">pysics.manager.</code><code class="sig-name descname">PhysicsManager</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">objects</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">tick_length</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">time_passed</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.manager.PhysicsManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a universe in which physics works the way it does in that universe.
+Time (ticks) passes individually in each universe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tick_length</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The amount of time, in seconds, a tick is for this universe. This can be changed after initialization.
+Time can move backwards.</p></li>
+<li><p><strong>time_passed</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The amount of time, in seconds, that has passed in this manager’s universe.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pysics.manager.PhysicsManager.objects">
+<code class="sig-name descname">objects</code><a class="headerlink" href="#pysics.manager.PhysicsManager.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>All the objects within this universe.
+Ticks pass for all objects when <a class="reference internal" href="#pysics.manager.PhysicsManager.tick" title="pysics.manager.PhysicsManager.tick"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tick()</span></code></a> is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[<code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.physics_obj.PhysicsObject</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.manager.PhysicsManager.tick_length">
+<code class="sig-name descname">tick_length</code><a class="headerlink" href="#pysics.manager.PhysicsManager.tick_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The configured value of how many seconds a tick is.
+Recommended to be small for games to reduce/prevent collision issues.
+Yes, time can move backwards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.manager.PhysicsManager.time_passed">
+<code class="sig-name descname">time_passed</code><a class="headerlink" href="#pysics.manager.PhysicsManager.time_passed" title="Permalink to this definition">¶</a></dt>
+<dd><p>The amount of time, in seconds, that has passed in this universe.
+Not necessarily the same for all objects within this universe (in case objects are within multiple universes, or an object is ticked individually)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.manager.PhysicsManager.tick">
+<code class="sig-name descname">tick</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tick_length</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.manager.PhysicsManager.tick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a single physics tick pass for all objects in this universe.</p>
+<p>If tick_length is not supplied, then use the universe’s tick length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tick_length</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – <p>The amount of time this tick lasts.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Time <em>can</em> move backwards.</p>
+</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.manager.PhysicsManager.tick_object">
+<code class="sig-name descname">tick_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#pysics.obj.PhysicsObject" title="pysics.obj.PhysicsObject">pysics.obj.PhysicsObject</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.manager.PhysicsManager.tick_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a single physics tick pass for a single object. The tick_length is this manager’s configured length.</p>
+<p>This can be achieved by calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">pysics.physics_obj.PhysicsObject.tick()</span></code> and providing the configured tick_length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.physics_obj.PhysicsObject</span></code>) – The object that is to be ticked.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.manager.PhysicsManager.add_object">
+<code class="sig-name descname">add_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ph_obj</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#pysics.obj.PhysicsObject" title="pysics.obj.PhysicsObject">pysics.obj.PhysicsObject</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.manager.PhysicsManager.add_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an object to this universe. Adds the object to the end of the <code class="docutils literal notranslate"><span class="pre">objects</span></code> list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ph_obj</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.physics_obj.PhysicsObject</span></code>) – The object to be added to this universe.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pysics.errors.NameUsedError" title="pysics.errors.NameUsedError"><strong>pysics.errors.NameUsedError</strong></a> – There cannot be two objects in one universe with the same name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.manager.PhysicsManager.remove_object">
+<code class="sig-name descname">remove_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#pysics.obj.PhysicsObject" title="pysics.obj.PhysicsObject">pysics.obj.PhysicsObject</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.manager.PhysicsManager.remove_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a physics object using the instance itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.physics_obj.PhysicsObject</span></code>) – The object to remove from this universe (the instance itself).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.manager.PhysicsManager.remove_object_by_name">
+<code class="sig-name descname">remove_object_by_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pysics.manager.PhysicsManager.remove_object_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a physics object using its name.</p>
+<p>If there is no object with the given name, fails silently.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The name of the object to be removed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.manager.PhysicsManager.clear">
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.manager.PhysicsManager.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all physics objects from the universe. Clears the objects list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>All the objects that were previously a part of this universe.
+Useful for transferring all objects to a different universe.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[<code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.physics_obj.PhysicsObject</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysics.obj">
+<span id="module-pysics-obj"></span><h2><em>module</em> <code class="docutils literal notranslate"><span class="pre">pysics.obj</span></code><a class="headerlink" href="#module-pysics.obj" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pysics.obj.PhysicsObject">
+<em class="property">class </em><code class="sig-prename descclassname">pysics.obj.</code><code class="sig-name descname">PhysicsObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">xpos</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">ypos</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">zpos</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">xvel</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">yvel</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">zvel</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">x_orientation</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">y_orientation</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">z_orientation</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">x_angular_vel</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">y_angular_vel</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">z_angular_vel</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">forces</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">mass</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">moment_of_inertia</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">time_passed</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.obj.PhysicsObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an object in space that will react as forces are applied on it over ticks (time).
+Acceleration is only calculated when the object moves (at the beginning of each tick).
+Acceleration can be manually calculated with <a class="reference internal" href="#pysics.obj.PhysicsObject.calculate_accel" title="pysics.obj.PhysicsObject.calculate_accel"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PhysicsObject.calculate_accel()</span></code></a>.
+Objects have a mass of 1 kilogram by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The name of this object.</p></li>
+<li><p><strong>xpos</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial position on the x axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.
+East is positive, West is negative.</p></li>
+<li><p><strong>ypos</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial position on the y axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.
+Up is positive, Down is negative.</p></li>
+<li><p><strong>zpos</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial position on the z axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.
+North is positive, South is negative.</p></li>
+<li><p><strong>xvel</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s velocity on the x axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.
+East is positive, West is negative.</p></li>
+<li><p><strong>yvel</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s velocity on the y axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.
+Up is positive, Down is negative.</p></li>
+<li><p><strong>zvel</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s velocity on the z axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.
+North is positive, South is negative.</p></li>
+<li><p><strong>x_orientation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial orientation on the x axis in radians.
+Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.</p></li>
+<li><p><strong>y_orientation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial orientation on the y axis in radians.
+Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.</p></li>
+<li><p><strong>z_orientation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial orientation on the z axis in radians.
+Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.</p></li>
+<li><p><strong>x_angular_vel</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial angular velocity on the x axis in radians per second.
+Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.</p></li>
+<li><p><strong>y_angular_vel</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial angular velocity on the y axis in radians per second.
+Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.</p></li>
+<li><p><strong>z_angular_vel</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The object’s initial angular velocity on the z axis in radians per second.
+Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not provided.</p></li>
+<li><p><strong>forces</strong> (list[<a class="reference internal" href="#pysics.force.Force" title="pysics.force.Force"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.force.Force</span></code></a>]) – The forces that will act on this object. Defaults to no forces.
+Useful for creating many PhysicsObjects.</p></li>
+<li><p><strong>mass</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The mass of this object. Defaults to 1 kilogram (in case you don’t want to deal with mass)</p></li>
+<li><p><strong>moment_of_inertia</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The moment of inertia of this object (how easily the object rotates). Defaults to 1 kg*m.</p></li>
+<li><p><strong>time_passed</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The total amount of time, in seconds, that has passed for this object.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#pysics.obj.PhysicsObject.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of this physics object. It cannot be the same as another object’s name in the same universe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.forces">
+<code class="sig-name descname">forces</code><a class="headerlink" href="#pysics.obj.PhysicsObject.forces" title="Permalink to this definition">¶</a></dt>
+<dd><p>All the forces that act on this object each tick.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list[<a class="reference internal" href="#pysics.force.Force" title="pysics.force.Force"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.force.Force</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.mass">
+<code class="sig-name descname">mass</code><a class="headerlink" href="#pysics.obj.PhysicsObject.mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s mass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.moment_of_inertia">
+<code class="sig-name descname">moment_of_inertia</code><a class="headerlink" href="#pysics.obj.PhysicsObject.moment_of_inertia" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s moment of inertia (how easily it can rotate)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.xpos">
+<code class="sig-name descname">xpos</code><a class="headerlink" href="#pysics.obj.PhysicsObject.xpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s position on the x axis in meters.
+East is positive, West is negative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.ypos">
+<code class="sig-name descname">ypos</code><a class="headerlink" href="#pysics.obj.PhysicsObject.ypos" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s position on the y axis in meters.
+Up is positive, Down is negative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.zpos">
+<code class="sig-name descname">zpos</code><a class="headerlink" href="#pysics.obj.PhysicsObject.zpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s position on the z axis in meters.
+North is positive, South is negative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.xvel">
+<code class="sig-name descname">xvel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.xvel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s translational velocity on the x axis in meters per second.
+East is positive, West is negative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.yvel">
+<code class="sig-name descname">yvel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.yvel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s translational velocity on the y xis in meters per second.
+Up is positive, Down is negatives.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.zvel">
+<code class="sig-name descname">zvel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.zvel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s translational velocity on the z axis in meters per second.
+North is positive, South is negative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.xaccel">
+<code class="sig-name descname">xaccel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.xaccel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s translational acceleration on the x axis in meters per second^2.
+East is positive, West is negaitve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.yaccel">
+<code class="sig-name descname">yaccel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.yaccel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s translational acceleration on the y axis in meters per second^2.
+Up is positive, Down is negaitve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.zaccel">
+<code class="sig-name descname">zaccel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.zaccel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This object’s translational acceleration on the z axis in meters per second^2.
+North is positive, South is negaitve.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.x_orientation">
+<code class="sig-name descname">x_orientation</code><a class="headerlink" href="#pysics.obj.PhysicsObject.x_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s orientation on the x axis in radians.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.y_orientation">
+<code class="sig-name descname">y_orientation</code><a class="headerlink" href="#pysics.obj.PhysicsObject.y_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s orientation on the y axis in radians.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.z_orientation">
+<code class="sig-name descname">z_orientation</code><a class="headerlink" href="#pysics.obj.PhysicsObject.z_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s orientation on the z axis in radians.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.x_angular_vel">
+<code class="sig-name descname">x_angular_vel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.x_angular_vel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s angular velocity on the x axis in radians per second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.y_angular_vel">
+<code class="sig-name descname">y_angular_vel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.y_angular_vel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s angular velocity on the y axis in radians per second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.z_angular_vel">
+<code class="sig-name descname">z_angular_vel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.z_angular_vel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s angular velocity on the z axis in radians per second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.x_angular_accel">
+<code class="sig-name descname">x_angular_accel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.x_angular_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s angular acceleration on the x axis in radians per second^2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.y_angular_accel">
+<code class="sig-name descname">y_angular_accel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.y_angular_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s angular acceleration on the y axis in radians per second^2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.z_angular_accel">
+<code class="sig-name descname">z_angular_accel</code><a class="headerlink" href="#pysics.obj.PhysicsObject.z_angular_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object’s angular acceleration on the z axis in radians per second^2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.obj.PhysicsObject.time_passed">
+<code class="sig-name descname">time_passed</code><a class="headerlink" href="#pysics.obj.PhysicsObject.time_passed" title="Permalink to this definition">¶</a></dt>
+<dd><p>The amount of time, in seconds, that has passed for this object (total time over all ticks).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pysics.errors.MassOfZeroError" title="pysics.errors.MassOfZeroError"><strong>MassOfZeroError</strong></a> – Raised if an object is given a mass of <code class="docutils literal notranslate"><span class="pre">0</span></code> on initialization.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.tick">
+<code class="sig-name descname">tick</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tick_length</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.obj.PhysicsObject.tick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time passes for this object.</p>
+<p>Forces will be applied and the object will move based on velocity and acceleration.</p>
+<p>Acceleration is recalculated just before the position and velocity are updated.</p>
+<p>Translational position/velocity is calculated first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tick_length</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The amount of time that passes this tick.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.get_pos">
+<code class="sig-name descname">get_pos</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.obj.PhysicsObject.get_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the object’s current position on each axis in the form (x, y, z)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a tuple of the object’s position on the 3 dimensions (x, y, z)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple(<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.get_orientation">
+<code class="sig-name descname">get_orientation</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.obj.PhysicsObject.get_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the object’s current orientation on each axis in the form (x, y, z)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a tuple of the object’s position on the 3 dimensions (x, y, z)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple(<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.get_vel">
+<code class="sig-name descname">get_vel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.obj.PhysicsObject.get_vel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the object’s current velocity on each axis in the form (x, y, z)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a tuple of the object’s velocity on the 3 dimensions (x, y, z)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple(<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.get_angular_vel">
+<code class="sig-name descname">get_angular_vel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.obj.PhysicsObject.get_angular_vel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the object’s current angular velocity on each axis in the form (x, y, z)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a tuple of the object’s velocity on the 3 dimensions (x, y, z)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple(<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.get_accel">
+<code class="sig-name descname">get_accel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.obj.PhysicsObject.get_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the object’s current translational acceleration on each axis in the form (x, y, z)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a tuple of the object’s translational acceleration on the 3 dimensions (x, y, z)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple(<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.get_angular_accel">
+<code class="sig-name descname">get_angular_accel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.obj.PhysicsObject.get_angular_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the object’s current angular acceleration on each axis in the form (x, y, z)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a tuple of the object’s acceleration on the 3 dimensions (x, y, z)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple(<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.calculate_accel">
+<code class="sig-name descname">calculate_accel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.obj.PhysicsObject.calculate_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates and sets the object’s translational (linear) acceleration for each dimension.</p>
+<p>Adds all the newtons of force for each dimension from <a class="reference internal" href="#pysics.obj.PhysicsObject.forces" title="pysics.obj.PhysicsObject.forces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">forces</span></code></a>, then divides each result by the <a class="reference internal" href="#pysics.obj.PhysicsObject.mass" title="pysics.obj.PhysicsObject.mass"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mass</span></code></a>.</p>
+<p>This is called when a <a class="reference internal" href="#pysics.obj.PhysicsObject.tick" title="pysics.obj.PhysicsObject.tick"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tick()</span></code></a> is called. Translational acceleration can be updated manually by calling this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns a tuple of the object’s acceleration on the 3 dimensions (x, y, z)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple(<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pysics.errors.MassOfZeroError" title="pysics.errors.MassOfZeroError"><strong>MassOfZeroError</strong></a> – PhysicsObjects cannot have a mass of <code class="docutils literal notranslate"><span class="pre">0</span></code>. Prevents from dividing by <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.calculate_angular_accel">
+<code class="sig-name descname">calculate_angular_accel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.obj.PhysicsObject.calculate_angular_accel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates and sets the object’s angular acceleration for each dimension.</p>
+<p>Adds all the newtons of force for each dimension from <a class="reference internal" href="#pysics.obj.PhysicsObject.forces" title="pysics.obj.PhysicsObject.forces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">forces</span></code></a>, then divides each result by the <a class="reference internal" href="#pysics.obj.PhysicsObject.moment_of_inertia" title="pysics.obj.PhysicsObject.moment_of_inertia"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment_of_inertia</span></code></a>.</p>
+<p>This is called when a <a class="reference internal" href="#pysics.obj.PhysicsObject.tick" title="pysics.obj.PhysicsObject.tick"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tick()</span></code></a> is called. Angular acceleration can be updated manually by calling this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The angular acceleration of the 3 dimensions in the form: (x, y, z)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple( <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pysics.errors.MomentOfInertiaZeroError" title="pysics.errors.MomentOfInertiaZeroError"><strong>MomentOfInertiaZeroError</strong></a> – PhysicsObjects cannot have a moment of inertia of <code class="docutils literal notranslate"><span class="pre">0</span></code>. Prevents from dividing by <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.apply_force">
+<code class="sig-name descname">apply_force</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_force</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.obj.PhysicsObject.apply_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies another force on this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_force</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">new_force</span></code>) – The force instance that will be applied to this object.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pysics.errors.NameUsedError" title="pysics.errors.NameUsedError"><strong>pysics.errors.NameUsedError</strong></a> – You cannot use the same name twice for a force on the same object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.remove_force">
+<code class="sig-name descname">remove_force</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">force</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.obj.PhysicsObject.remove_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a force from this object so that it is no longer applied (removes from <a class="reference internal" href="#pysics.obj.PhysicsObject.forces" title="pysics.obj.PhysicsObject.forces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">forces</span></code></a>).
+Fails silently if there is no force with the given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>force</strong> (<a class="reference internal" href="#pysics.force.Force" title="pysics.force.Force"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.force.Force</span></code></a>) – The instance of the force to remove.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.remove_force_by_name">
+<code class="sig-name descname">remove_force_by_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.obj.PhysicsObject.remove_force_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a force based on its name so that it is no longer applied to this object (removes from <a class="reference internal" href="#pysics.obj.PhysicsObject.forces" title="pysics.obj.PhysicsObject.forces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">forces</span></code></a>).
+Fails silently if there is no force with the given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The name of the force to be removed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.obj.PhysicsObject.clear_forces">
+<code class="sig-name descname">clear_forces</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#pysics.obj.PhysicsObject.clear_forces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all the forces acting on this object (Empties <a class="reference internal" href="#pysics.obj.PhysicsObject.forces" title="pysics.obj.PhysicsObject.forces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">forces</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>All the forces cleared. Useful for transferring forces to another object.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[<a class="reference internal" href="#pysics.force.Force" title="pysics.force.Force"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysics.force.Force</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysics.force">
+<span id="module-pysics-force"></span><h2><em>module</em> <code class="docutils literal notranslate"><span class="pre">pysics.force</span></code><a class="headerlink" href="#module-pysics.force" title="Permalink to this headline">¶</a></h2>
+<dl class="py data">
+<dt id="pysics.force.EARTH_G">
+<code class="sig-prename descclassname">pysics.force.</code><code class="sig-name descname">EARTH_G</code><em class="property"> = 9.80665</em><a class="headerlink" href="#pysics.force.EARTH_G" title="Permalink to this definition">¶</a></dt>
+<dd><p>The gravitational acceleration on the surface of the Earth in m/s^2</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="pysics.force.MOON_G">
+<code class="sig-prename descclassname">pysics.force.</code><code class="sig-name descname">MOON_G</code><em class="property"> = 1.625</em><a class="headerlink" href="#pysics.force.MOON_G" title="Permalink to this definition">¶</a></dt>
+<dd><p>The gravitational acceleration on the surface of the Moon in m/s^2</p>
+</dd></dl>
+
+<dl class="py data">
+<dt id="pysics.force.MARS_G">
+<code class="sig-prename descclassname">pysics.force.</code><code class="sig-name descname">MARS_G</code><em class="property"> = 3.72076</em><a class="headerlink" href="#pysics.force.MARS_G" title="Permalink to this definition">¶</a></dt>
+<dd><p>The gravitational acceleration on the surface of Mars in m/s^2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pysics.force.calculate_grav_force">
+<code class="sig-prename descclassname">pysics.force.</code><code class="sig-name descname">calculate_grav_force</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span><span class="o">=</span><span class="default_value">9.80665</span></em>, <em class="sig-param"><span class="n">parent_mass</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#pysics.force.calculate_grav_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the gravitational force that would be applied to an object
+with the given mass given a gravitational acceleration.</p>
+<p>Calculation: <code class="docutils literal notranslate"><span class="pre">gravitational</span> <span class="pre">force</span> <span class="pre">=</span> <span class="pre">mg</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code> is the mass of the parent object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">g</span></code> is the gravitational acceleration (the gravitational constant).</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The gravitational acceleration (gravitational constant). This is the resulting acceleration from the force.
+Defaults to <a class="reference internal" href="#pysics.force.EARTH_G" title="pysics.force.EARTH_G"><code class="xref py py-attr docutils literal notranslate"><span class="pre">EARTH_G</span></code></a> (9.80665 m/s^2)</p></li>
+<li><p><strong>parent_mass</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The mass of the object the gravitational force will be applied to. Defaults to 1 kilogram.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The newtons of force that would be required to have a mass of <code class="docutils literal notranslate"><span class="pre">parent_mass</span></code> accelerate at <code class="docutils literal notranslate"><span class="pre">g</span></code> m/s^2.
+The force you will make from this does not necessarily have to be on the y (vertical) axis. Why not have gravity be sideways?</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pysics.force.Force">
+<em class="property">class </em><code class="sig-prename descclassname">pysics.force.</code><code class="sig-name descname">Force</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">z</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">force_type</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">x_rotation_axis_distance</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">y_rotation_axis_distance</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">z_rotation_axis_distance</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">x_rot_angle</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">y_rot_angle</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">z_rot_angle</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysics.force.Force" title="Permalink to this definition">¶</a></dt>
+<dd><p>A force that acts upon a <code class="xref py py-class docutils literal notranslate"><span class="pre">PhysicsObject</span></code>.</p>
+<p>The x, y, and z attributes can be used freely by developers (meaning you can use any axis as you wish. For example, you could use the universe’s y axis as your z axis).
+If you desire to only have 2D motion, then completely ignore an entire dimension. If you wish to only have 1D motion, the ignore 2 dimensions.</p>
+<p>It is not recommended that the variable that stores a <a class="reference internal" href="#pysics.force.Force" title="pysics.force.Force"><code class="xref py py-class docutils literal notranslate"><span class="pre">Force</span></code></a> be called <code class="docutils literal notranslate"><span class="pre">force</span></code>, because that is also the name of the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">force</span></code>, which could cause naming conflicts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The force’s name. Used to identify this force when applied to an object.</p></li>
+<li><p><strong>x</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The newtons of force in the x direction. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not supplied.
+East is positive, West is negative.</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The newtons of force in the x direction. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not supplied.
+Up is positive, Down is negative.</p></li>
+<li><p><strong>z</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The newtons of force in the x direction. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> if not supplied.
+North is positive, South is negative.</p></li>
+<li><p><strong>force_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – <dl class="simple">
+<dt>Represents the type of force this is with the following values:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Applied Force</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: Gravitational Force</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: Frictional Force (Not yet implemented)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span></code>: Tension (Not yet implemented)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4</span></code>: Air Resistance (Not yet implemented)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#pysics.force.Force.force_type" title="pysics.force.Force.force_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">force_type</span></code></a> is currently unused and will not change (will always stay initial value)</p>
+</div>
+</p></li>
+<li><p><strong>x_rotation_axis_distance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The distance from the axis of rotation on the x-axis in meters. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>y_rotation_axis_distance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The distance from the axis of roataion on the y-axis in meters. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>z_rotation_axis_distance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The distance from the axis of rotation on the z-axis in meters. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>x_rot_angle</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The angle, in radians, from the axis of rotation on the x-axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>y_rot_angle</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The angle, in radians, from the axis of rotation on the x-axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>z_rot_angle</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – The angle, in radians, from the axis of rotation on the z-axis. Defaults to <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pysics.force.Force.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#pysics.force.Force.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of this force. It cannot be the same as any other force on an object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.x">
+<code class="sig-name descname">x</code><a class="headerlink" href="#pysics.force.Force.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>The newtons of force in the x direction (typically east/west).
+Can be positive or negative, with (+) being east and (-) being west.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.y">
+<code class="sig-name descname">y</code><a class="headerlink" href="#pysics.force.Force.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>The newtons of force in the y direction (typically vertical).
+Can be positive or negative, with (+) being up and (-) being down.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.z">
+<code class="sig-name descname">z</code><a class="headerlink" href="#pysics.force.Force.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>The newtons of force in the z direction (typically north/south).
+Can be positive or negative, with (+) being north and (-) being south.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.force_type">
+<code class="sig-name descname">force_type</code><a class="headerlink" href="#pysics.force.Force.force_type" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Represents the type of force this force is with the following values:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Applied Force</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: Gravitational Force</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code>: Frictional Force (Not yet implemented)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3</span></code>: Tension (Not yet implemented)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4</span></code>: Air Resistance (Not yet implemented)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently unused and not changed (will stay its initial value).</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.x_rotation_axis_distance">
+<code class="sig-name descname">x_rotation_axis_distance</code><a class="headerlink" href="#pysics.force.Force.x_rotation_axis_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The distance from the axis of rotation on the x-axis in meters.
+Vector quantity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.y_rotation_axis_distance">
+<code class="sig-name descname">y_rotation_axis_distance</code><a class="headerlink" href="#pysics.force.Force.y_rotation_axis_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The distance from the axis of rotation on the y-axis in meters.
+Vector quantity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.z_rotation_axis_distance">
+<code class="sig-name descname">z_rotation_axis_distance</code><a class="headerlink" href="#pysics.force.Force.z_rotation_axis_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The distance from the axis of rotation on the z-axis in meters.
+Vector quantity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.x_rot_angle">
+<code class="sig-name descname">x_rot_angle</code><a class="headerlink" href="#pysics.force.Force.x_rot_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>The angle, in radians, from the axis of rotation on the x-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.y_rot_angle">
+<code class="sig-name descname">y_rot_angle</code><a class="headerlink" href="#pysics.force.Force.y_rot_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>The angle, in radians, from the axis of rotation on the y-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.z_rot_angle">
+<code class="sig-name descname">z_rot_angle</code><a class="headerlink" href="#pysics.force.Force.z_rot_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>The angle, in radians, from the axis of rotation on the z-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.x_torque">
+<code class="sig-name descname">x_torque</code><a class="headerlink" href="#pysics.force.Force.x_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>The amount of torque on the x axis in newton meters.
+Vector quantity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.y_torque">
+<code class="sig-name descname">y_torque</code><a class="headerlink" href="#pysics.force.Force.y_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>The amount of torque on the y axis in newton meters.
+Vector quantity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pysics.force.Force.z_torque">
+<code class="sig-name descname">z_torque</code><a class="headerlink" href="#pysics.force.Force.z_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>The amount of torque on the z axis in newton meters.
+Vector quantity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pysics.force.Force.calculate_torque">
+<code class="sig-name descname">calculate_torque</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#pysics.force.Force.calculate_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the torque this force applies on the x and y axis.</p>
+<p>Torque for each axis can be calculated using the following equation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">torque</span> <span class="o">=</span> <span class="p">(</span><span class="n">distance</span> <span class="kn">from</span> <span class="nn">axis</span> <span class="n">of</span> <span class="n">rotation</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">force</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span> <span class="kn">from</span> <span class="nn">axis</span> <span class="n">of</span> <span class="n">rotation</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The torque this force will apply to any object in the form (x_torque, y_torque, z_torque)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple( <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pysics.errors">
+<span id="module-pysics-errors"></span><h2><em>module</em> <code class="docutils literal notranslate"><span class="pre">pysics.errors</span></code><a class="headerlink" href="#module-pysics.errors" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="pysics.errors.NameUsedError">
+<em class="property">exception </em><code class="sig-prename descclassname">pysics.errors.</code><code class="sig-name descname">NameUsedError</code><a class="headerlink" href="#pysics.errors.NameUsedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when user attempts to use a name for a new Force or PhysicsObject that has already been used by another thing of the same type.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pysics.errors.MassOfZeroError">
+<em class="property">exception </em><code class="sig-prename descclassname">pysics.errors.</code><code class="sig-name descname">MassOfZeroError</code><a class="headerlink" href="#pysics.errors.MassOfZeroError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when the user attempts to use a mass of 0 for a PhysicsObject (prevents division by 0).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="pysics.errors.MomentOfInertiaZeroError">
+<em class="property">exception </em><code class="sig-prename descclassname">pysics.errors.</code><code class="sig-name descname">MomentOfInertiaZeroError</code><a class="headerlink" href="#pysics.errors.MomentOfInertiaZeroError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when the user attempts to use a moment of inertia of 0 for a PhysicsObject (prevents division by 0).</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pysics</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Pysics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pysics Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-pysics.manager"><em>module</em> <code class="docutils literal notranslate"><span class="pre">pysics.manager</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pysics.obj"><em>module</em> <code class="docutils literal notranslate"><span class="pre">pysics.obj</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pysics.force"><em>module</em> <code class="docutils literal notranslate"><span class="pre">pysics.force</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pysics.errors"><em>module</em> <code class="docutils literal notranslate"><span class="pre">pysics.errors</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="basics.html">The Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accuracy.html">Accuracy of Pysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collisions.html">Collisions with Pysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energy.html">Work and Mechanical Energy</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="welcome.html" title="previous chapter">Pysics</a></li>
+      <li>Next: <a href="basics.html" title="next chapter">The Basics</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Johnson.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

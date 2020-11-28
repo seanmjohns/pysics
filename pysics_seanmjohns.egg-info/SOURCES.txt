@@ -1,0 +1,12 @@
+README.md
+setup.py
+pysics/__init__.py
+pysics/errors.py
+pysics/force.py
+pysics/manager.py
+pysics/obj.py
+pysics/pysics.py
+pysics_seanmjohns.egg-info/PKG-INFO
+pysics_seanmjohns.egg-info/SOURCES.txt
+pysics_seanmjohns.egg-info/dependency_links.txt
+pysics_seanmjohns.egg-info/top_level.txt

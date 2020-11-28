@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Basics &#8212; pysics  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Accuracy of Pysics" href="accuracy.html" />
+    <link rel="prev" title="Pysics Reference" href="reference.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="the-basics">
+<h1>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h1>
+<p>Pysics allows developers to create there games with full control over how much time passes and when time passes.</p>
+<div class="section" id="physicsmanager">
+<h2>PhysicsManager<a class="headerlink" href="#physicsmanager" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">PhysicsManager</span></code> s each represent a universe in which physics works a specific way based on its configuration. It is possible to have multiple universes that are used at the same time for different things. These “universes” operate on their own “ticks” (time). Each manager has a list of all the objects within its universe. When a tick passes for a universe, a tick passes for each object within it, and the forces for each object act on them.</p>
+</div>
+<div class="section" id="ticks">
+<h2>Ticks<a class="headerlink" href="#ticks" title="Permalink to this headline">¶</a></h2>
+<p>“Ticks” are the amount of time that passes. The <code class="docutils literal notranslate"><span class="pre">tick_length</span></code> of a manager is configurable on the fly and is specific to each manager. It is common to change the tick length for an individual tick, sometimes to have a specific force to act over a smaller or instantaneous time interval (allowing for things like collisions).</p>
+<p>A tick passes when <code class="docutils literal notranslate"><span class="pre">PhysicsManager.tick(tick_length)</span></code> is called (the <code class="docutils literal notranslate"><span class="pre">tick_length</span></code> will default to the <code class="docutils literal notranslate"><span class="pre">PhysicsManager</span></code>’s configured tick length). The default <code class="docutils literal notranslate"><span class="pre">tick_length</span></code> for a manager is 1 second (python value of 1). Velocity, acceleration, and position in pysics are measured in meters per second, meters per second^2, and meters, respectively (they all are in relation to seconds).</p>
+<p>It is also common to make a tick pass for a specific object (<code class="docutils literal notranslate"><span class="pre">PhysicsObject.tick(tick_length)</span></code>; <code class="docutils literal notranslate"><span class="pre">tick_length</span></code> must be given). Time will then only pass for that object.</p>
+<p>Ticks do not go by automatically, but instead pass every time <code class="docutils literal notranslate"><span class="pre">PhysicsManager.tick()</span></code> is called (typically done every frame in a game loop). In other words, time only passes when <code class="docutils literal notranslate"><span class="pre">tick()</span></code> is called, and time is frozen at all other times. This provides the advantage of not relying on the CPU clock for passing time when implementing physics into your game. If you were to rely on how much real time had passed to determine when an object should move, they could become inconsistent because it takes time for the rest of your code to run, too, and that could cause issues for slower PCs.</p>
+<p>Having a tick pass is simple. First set up a <code class="docutils literal notranslate"><span class="pre">PhysicsManager</span></code>, then call <code class="docutils literal notranslate"><span class="pre">tick()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysics.manager</span> <span class="kn">import</span> <span class="n">PhysicsManager</span>
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">PhysicsManager</span><span class="p">(</span><span class="n">tick_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> <span class="c1">#tick_length will be the manager&#39;s default tick length</span>
+<span class="n">manager</span><span class="o">.</span><span class="n">tick</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the above example, exactly 0.1 seconds has passed, because that is how long one tick for the <code class="docutils literal notranslate"><span class="pre">manager</span></code> is. In this case, calling tick was virtually pointless because there were no <code class="docutils literal notranslate"><span class="pre">PhysicsObject</span></code> s within the manager’s universe to be acted upon, however it still qualifies as a good starting example.</p>
+</div>
+<div class="section" id="physicsobject">
+<h2>PhysicsObject<a class="headerlink" href="#physicsobject" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">PhysicsObject</span></code> s are objects within a <code class="docutils literal notranslate"><span class="pre">PhysicsManager</span></code> universe. Every time a tick passes within a universe, a tick passes for a <code class="docutils literal notranslate"><span class="pre">PhysicsObject</span></code>, and the forces applied to this object will take effect.</p>
+<p>As mentioned above, ticks can pass individually for a single object, and forces will only act on said object during the time interval. Each object contains a list of all the forces acting on it. An object’s velocity and position can be manipulated directly without the use of forces, and can be useful in some situations. Each <code class="docutils literal notranslate"><span class="pre">PhysicsObject</span></code> has its own <code class="docutils literal notranslate"><span class="pre">mass</span></code>.</p>
+<p>Although objects <em>can</em> be within multiple universes, it is <em>not</em> recommended, because each universe will affect the object as ticks pass for that universe, making it difficult to understand what is happening. Certain game scenarios and effects may warrant such an action, but that is very rare.</p>
+</div>
+<div class="section" id="force">
+<h2>Force<a class="headerlink" href="#force" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Force</span></code> s are exactly what they sound like: forces that act on a <code class="docutils literal notranslate"><span class="pre">PhysicsObject</span></code>, and they are a part of their parent <code class="docutils literal notranslate"><span class="pre">PhysicsObject</span></code>. Forces are in Newtons. They act on their parent objects based on how long an object is “ticked” (it is possible to tick an object individually, however in most cases, programmers tick in them unison with all other objects in their manager’s universe).</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Below is an example in which an applied force will act on an object for a few ticks. We will break it down afterwards:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pysics.manager</span> <span class="kn">import</span> <span class="n">PhysicsManager</span>
+<span class="kn">from</span> <span class="nn">pysics.physics_obj</span> <span class="kn">import</span> <span class="n">PhysicsObject</span>
+<span class="kn">from</span> <span class="nn">pysics.force</span> <span class="kn">import</span> <span class="n">Force</span>
+
+<span class="n">tick_length</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1">#second</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">PhysicsManager</span><span class="p">(</span><span class="n">tick_length</span><span class="p">)</span>
+
+<span class="n">ball</span> <span class="o">=</span> <span class="n">PhysicsObject</span><span class="p">(</span><span class="s2">&quot;ball&quot;</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ypos</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">xvel</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">manager</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">ball</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initial position: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()))</span>
+
+<span class="n">force</span> <span class="o">=</span> <span class="n">Force</span><span class="p">(</span><span class="s2">&quot;my force&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ball</span><span class="o">.</span><span class="n">apply_force</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Position after applying force: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ball position: (x, y, z)&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">second</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">tick</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">string_second</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; second(s): &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>Now lets break it down:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tick_length</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1">#second</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">PhysicsManager</span><span class="p">(</span><span class="n">tick_length</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These two lines set up and configure the manager and its universe. For this manager, each time <code class="docutils literal notranslate"><span class="pre">tick()</span></code> is called, 1 second will pass.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ball</span> <span class="o">=</span> <span class="n">PhysicsObject</span><span class="p">(</span><span class="s2">&quot;ball&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">xvel</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">manager</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">ball</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will create a ball object and add it to the universe we created earlier. This new “ball” object will have an initial position of (10, 10) and an initial velocity of 10 meters per second to the right.</p>
+<p>If we wanted to work in the third dimension, all we would have to do is use the <code class="docutils literal notranslate"><span class="pre">z</span></code> argument (ex: <code class="docutils literal notranslate"><span class="pre">z=10</span></code>). This would make the ball’s initial position on the z axis 10 meters from the “origin”. For 2D games, the third dimension in pysics is generally not dealt with (and can be kept out of mind). Any position and velocity arguments that are not provided default to 0 meters or meters per second, respectively.</p>
+<p>Lets move on to the next chunk of code.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initial position: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()))</span>
+
+<span class="n">force</span> <span class="o">=</span> <span class="n">Force</span><span class="p">(</span><span class="s2">&quot;my force&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ball</span><span class="o">.</span><span class="n">apply_force</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Position after applying force: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>The first line just gives us the initial position of the ball for this example.</p>
+<p>The next line creates a 5 newton force, “my force”, that is directed in the <strong>negative-x direction</strong> (If you did not know this already, it is suggested that you take a physics mechanics recap/course). The following line applies our new force to the ball.</p>
+<p>The last line in this chunk prints the ball’s position. Lets take a look at the output from this bit of code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initial</span> <span class="n">position</span><span class="p">:</span> <span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Position</span> <span class="n">after</span> <span class="n">applying</span> <span class="n">force</span><span class="p">:</span> <span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>“Hold up, but didn’t we just apply a force to the ball? Why didn’t it move?”</p>
+<p>No time has passed. Velocity and acceleration only work over a time interval (remember the units? meters per <strong>second</strong> and meters per <strong>second^2</strong>). Time only passes when we call <code class="docutils literal notranslate"><span class="pre">PhysicsManager.tick()</span></code> (Time can also pass for an individual <code class="docutils literal notranslate"><span class="pre">PhysicsObject</span></code> if we call <code class="docutils literal notranslate"><span class="pre">PhysicsObject.tick()</span></code>, but we’ll get into that later).</p>
+<p>Now for the final block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ball position: (x, y, z)&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">second</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">tick</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">string_second</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; second(s): &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ball</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>The first line just prints out what form the ball’s position will be (and has been) displayed in.</p>
+<p>Within the for loop, exactly 5 ticks pass because <code class="docutils literal notranslate"><span class="pre">manager.tick()</span></code> is called 5 times. The total amount of time that passes within our <code class="docutils literal notranslate"><span class="pre">manager</span></code>’suniverse is 5 seconds because the <code class="docutils literal notranslate"><span class="pre">tick_length</span></code> configured for it is 1 second. For each second, the position of the ball is printed in the form displayed by the first <code class="docutils literal notranslate"><span class="pre">print()</span></code>. Let’s look at what it outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Ball</span> <span class="n">position</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<span class="mi">1</span> <span class="n">second</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="p">(</span><span class="mf">17.5</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="mi">2</span> <span class="n">second</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="mi">3</span> <span class="n">second</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="p">(</span><span class="mf">17.5</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="mi">4</span> <span class="n">second</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="mi">5</span> <span class="n">second</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first line is the form the ball’s position is displayed in, as mentioned before.</p>
+<p>The following lines are the ball’s position for each second. Notice how the ball moves every time <code class="docutils literal notranslate"><span class="pre">tick()</span></code> is called. Within these 5 seconds, the ball has turned around and passed its starting position.</p>
+<p>This example can also be found at the root of the repository (basic_example.py)</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pysics</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Pysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Pysics Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The Basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#physicsmanager">PhysicsManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ticks">Ticks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#physicsobject">PhysicsObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#force">Force</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accuracy.html">Accuracy of Pysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collisions.html">Collisions with Pysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="energy.html">Work and Mechanical Energy</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="reference.html" title="previous chapter">Pysics Reference</a></li>
+      <li>Next: <a href="accuracy.html" title="next chapter">Accuracy of Pysics</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Johnson.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/basics.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

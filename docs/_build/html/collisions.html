@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collisions with Pysics &#8212; pysics  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Work and Mechanical Energy" href="energy.html" />
+    <link rel="prev" title="Accuracy of Pysics" href="accuracy.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="collisions-with-pysics">
+<h1>Collisions with Pysics<a class="headerlink" href="#collisions-with-pysics" title="Permalink to this headline">¶</a></h1>
+<p>Creating collisions with Pysics requires some background physics knowledge (we’ll discuss that knowledge here for applications).</p>
+<div class="section" id="vertical-or-horizontal-boundary-collisions">
+<h2>Vertical or Horizontal Boundary Collisions<a class="headerlink" href="#vertical-or-horizontal-boundary-collisions" title="Permalink to this headline">¶</a></h2>
+<p>We are assuming here that these collisions are perfectly elastic, meaning no kinetic energy is lost (KE is a scalar, meaning direction does not apply).</p>
+<p>First, we need to understand how collision physics works (at least in an ideal universe). When an object collides with another object, an impulse force is applied to both forces, typically in opposite directions, over a very small amount of time. Impulse can be calculated by the following equation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Impulse</span> <span class="o">=</span> <span class="p">(</span><span class="n">force</span><span class="p">)(</span><span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Additionally, according to the <a class="reference external" href="https://en.wikipedia.org/wiki/Momentum">Law of Conservation of Momentum</a>, we know that in <em>all</em> collisions, the net momentum between the two-object system must stay the same (so <code class="docutils literal notranslate"><span class="pre">(momentum</span> <span class="pre">in)</span> <span class="pre">=</span> <span class="pre">(momemntum</span> <span class="pre">out)</span></code>. The change in momentum can be calculated using the following equation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Change</span> <span class="ow">in</span> <span class="n">Momentum</span> <span class="o">=</span> <span class="p">(</span><span class="n">Final</span> <span class="n">velocity</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">System</span> <span class="n">Mass</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Initial</span> <span class="n">velocity</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">System</span> <span class="n">Mass</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We <em>also</em> know that <code class="docutils literal notranslate"><span class="pre">Impulse</span> <span class="pre">=</span> <span class="pre">Change</span> <span class="pre">in</span> <span class="pre">Momentum</span></code> in a collision, so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">force</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">Final</span> <span class="n">velocity</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">System</span> <span class="n">mass</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Initial</span> <span class="n">velocity</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">System</span> <span class="n">mass</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">Impulse</span></code> and <code class="docutils literal notranslate"><span class="pre">Change</span> <span class="pre">in</span> <span class="pre">Momentum</span></code> equations, we will be able to solve for the force we need to bounce the object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">force</span> <span class="o">=</span> <span class="p">((</span><span class="n">Final</span> <span class="n">velocity</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">System</span> <span class="n">mass</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Initial</span> <span class="n">velocity</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">System</span> <span class="n">mass</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="n">force</span> <span class="o">=</span> <span class="p">(</span><span class="n">mass</span><span class="o">*</span><span class="p">(</span><span class="n">change</span> <span class="ow">in</span> <span class="n">net</span> <span class="n">velocity</span><span class="p">))</span><span class="o">/</span><span class="n">time</span>
+</pre></div>
+</div>
+<p>Since the object is colliding with a boundary that was not moving and will not move, we know that it had <code class="docutils literal notranslate"><span class="pre">0</span></code> momentum beforehand, and it will have <code class="docutils literal notranslate"><span class="pre">0</span></code> momentum after the collision. Because the boundary has no momentum before and after, the object must account for all the momentum in the system. The <code class="docutils literal notranslate"><span class="pre">change</span> <span class="pre">in</span> <span class="pre">system</span> <span class="pre">velocity</span></code> will therefore be the object’s change in velocity (and the <code class="docutils literal notranslate"><span class="pre">system</span> <span class="pre">mass</span></code> will just be the object’s mass, because we are assuming the boundary has no mass).</p>
+<p>Since no momentum is lost, the object must be moving at the same velocity magnitude as it was before the collision, so the change in velocity will be <code class="docutils literal notranslate"><span class="pre">velocity*2</span></code>.</p>
+<p>What is the time period of the impulse? The amount of time we will be applying our collision force over. This should be an extremely small period of time (like 1/1000 of normal <code class="docutils literal notranslate"><span class="pre">tick_length</span></code>). To apply this force:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">collision_force</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;collision force&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ball</span><span class="o">.</span><span class="n">yvel</span><span class="p">)</span><span class="o">*</span><span class="n">ball</span><span class="o">.</span><span class="n">mass</span><span class="p">)</span><span class="o">/</span><span class="n">wall_bounce_tick_length</span><span class="p">)</span>
+<span class="nb">object</span><span class="o">.</span><span class="n">apply_force</span><span class="p">(</span><span class="n">collision_force</span><span class="p">)</span>
+<span class="nb">object</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">wall_bounce_tick_length</span><span class="p">)</span>
+<span class="nb">object</span><span class="o">.</span><span class="n">remove_force</span><span class="p">(</span><span class="n">collision_force</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Notice how the time from our equation is the amount of time the force is applied.</p>
+<p>Now we can use our knowledge of impulse and momentum to make a ball bounce off the ground:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tick_length</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1">#A good tick lenght for games.</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">PhysicsManager</span><span class="p">(</span><span class="n">tick_length</span><span class="p">)</span>
+
+<span class="n">wall_bounce_tick_length</span> <span class="o">=</span> <span class="mf">0.0001</span> <span class="c1">#This needs to be much less than the normal tick length</span>
+
+<span class="c1">#... Creating the ball, adding gravitational force to it, etc.</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="c1">#... Make the stuff run at desired fps</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">tick</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ball</span><span class="o">.</span><span class="n">ypos</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="c1">#If the ball hits the floor</span>
+        <span class="n">collision_force</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;collision force&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ball</span><span class="o">.</span><span class="n">yvel</span><span class="p">)</span><span class="o">*</span><span class="n">ball</span><span class="o">.</span><span class="n">mass</span><span class="p">)</span><span class="o">/</span><span class="n">wall_bounce_tick_length</span><span class="p">)</span>
+        <span class="n">ball</span><span class="o">.</span><span class="n">apply_force</span><span class="p">(</span><span class="n">collision_force</span><span class="p">)</span>
+        <span class="n">ball</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">wall_bounce_tick_length</span><span class="p">)</span> <span class="c1">#Extremely small amount of time</span>
+        <span class="n">ball</span><span class="o">.</span><span class="n">remove_force</span><span class="p">(</span><span class="n">collision_force</span><span class="p">)</span>
+
+    <span class="c1">#... Draw the stuff to the screen</span>
+    <span class="c1">#... Events, blah, blah, blah</span>
+</pre></div>
+</div>
+<p>This can be seen in action in graphical_example.py</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pysics</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Pysics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Pysics Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basics.html">The Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accuracy.html">Accuracy of Pysics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Collisions with Pysics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vertical-or-horizontal-boundary-collisions">Vertical or Horizontal Boundary Collisions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="energy.html">Work and Mechanical Energy</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="accuracy.html" title="previous chapter">Accuracy of Pysics</a></li>
+      <li>Next: <a href="energy.html" title="next chapter">Work and Mechanical Energy</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sean Johnson.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/collisions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
