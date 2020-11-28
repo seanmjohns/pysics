@@ -9,10 +9,11 @@ Pysics Documentation
 .. toctree::
     :maxdepth: 2
 
+    reference
     basics
     accuracy
     collisions
-    reference
+    energy
 
 
 Indices and tables

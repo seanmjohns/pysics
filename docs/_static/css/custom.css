@@ -2,6 +2,14 @@
     width: 65% !important;
 }
 
+/* This is how I style equations in my AP physics C and AP Physics 2 notes*/
+.MathJax_Display {
+    padding-left: 0.5em !important;
+    border-left: 0.25em solid black !important;
+    margin-left: 1em !important;
+    text-align: start !important;
+}
+
 .section > h3,
 .function > dt,
 .data > dt,

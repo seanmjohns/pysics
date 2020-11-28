@@ -1,0 +1,132 @@
+==========================
+Work and Mechanical Energy
+==========================
+
+
+There are many kinds of energy, but we'll just cover mechanical energy (kinetic and potential energies) in this segment. Mechanical energy is the main type of energy (if not the only) that you will use in games. This segment should only cover your basic understanding of work and energy. You are unlikely to do many calculations with work and energy in your games, but it should give an understanding about what *should* be happening to ensure that your game is working correctly.
+
+Kinetic Energy
+==============
+
+Kinetic energy is the energy of motion. When an object is in motion, it possesses kinetic energy (often shortened to KE). KE is quantified by the following equation: 
+
+.. math:: KE = (1/2)mv^2
+
+In the above equation, m represents an object's mass, and v represents an object's velocity.
+
+kinetic energy is dependent upon both an object's mass and its velocity. An object's kinetic energy will change proportionally to any changes in mass. Increases in velocity will increase KE, and decreases in velocity will decrease KE. However this change is not proportional; when velocity doubles, KE quadruples.
+
+Potential Energy
+================
+
+Many people define potential energy as "stored energy", but this is not quite right (and its also pretty confuzing). An object does not "store" energy in the form of potential energy. Rather, an object possesses potential energy as a result of forces having the *potential* to do *work* on it.
+
+For example, when an object is above the ground, it has *gravitational potential energy* because the Earth's gravitational force has the *potential* to do work on it. The amount of gravitational potential energy can be quantified using the following equation:
+
+.. math:: GPE = mg*h
+
+Lets break down the variables in this equation:
+ - ``m``: mass of the block
+ - ``g``: The gravitational constant (``9.81`` near Earth's surface)
+ - ``h``: The height above the Earth (The height that the Earth can do work over)
+
+There are other forms of potential energy, including elastic potential energy (energy resulting from the compression and stretching of elastic objects like springs), and electric potential energy. It is unlikely you will deal with these forms of energy in games, but you may want to do some internet research if you do find these are needed.
+
+As a side note, the idea of a gravitational *constant* is a little misleading. The acceleration due to gravity can change. The gravitational constant on the moon is much less than that near Earth's surface. Even that is oversimplifying it. As an object moves away from the Earth's surface, then the acceleration due to gravity decreases. It just decreases by such a small amount unless you go a great distance that we call it a "constant".
+
+Its not the amount of ``PE`` that an object has that matters, its the change in ``PE``, as we will further explore soon.
+
+Work
+====
+
+Work done by a force is how much the force changes an object's energy. The amount of work done is dependent upon:
+
+ - The distance the force is applied over
+ - The angle from the ball's movement that the force is applied
+
+.. math:: W = ΔE
+
+Say we have a car that is rolling along the ground at a constant velocity. How much work is being done on the car? Zero.
+
+The forces on the car are reflected on the free body diagram below:
+
+.. image::
+    /images/FBD_work_car.png 
+    :alt: force of gravity down, normal force up
+    :align: center
+
+In this example, all the forces acting on the car are perpendicular to the car's motion, so these forces are not doing any work on the car. Notice that its kinetic and potential energy is not changing, which is a sign that no work is done.
+
+
+How do we calculate how much work a force does on an object? As we said above, we need the force itself, the distance it is applied over, and its angle relative to the ball's motion.
+
+.. math:: (force)(distance)(cos(θ))
+
+Remember that we said the amount of gravitational potential energy an object has can be represented by this:
+
+.. math:: mg * h
+
+That is simply how much work the Earth can do on the object. In the equation, ``mg`` is just our force (``Fg``), ``h`` is the distance ``Fg`` could be applied, and ``cos(θ)`` is not shown because that evaluates to ``1`` when the angle is ``0`` degrees.
+
+Lets do another example. We have a 1 kg ball that is dropped from rest from 2 meters above the ground. We must determine the velocity of the ball as it reaches the ground.
+
+First, we need to draw a free body diagram.
+
+.. image::
+    /images/FBD_work_ball.png
+    :alt: force of gravity down
+    :align: center
+
+Based on our free body diagram, we know that the Fg is the only force doing work (it is parallel to our motion, and that's the only force on our diagram). Since the ball was dropped from rest, its initial velocity was ``0 m/s``, and so its initial ``KE`` was also ``0 J``. Before the ball is dropped, all its mechanical energy is in the form of gravitational potential energy. Because the ball will be on the ground at the end, we can use the ground as the reference point for determining ``PE``. At the ground, the ball's ``PE`` is ``0 J`` because the Earth no longer has potential to do work on it.
+
+Because energy must be conserved in a closed system (our system includes the ball and the Earth here), then all of its ``PE`` must have been converted to ``KE`` by the time the ball reaches the ground.
+
+We also know that ``W = ΔE``. Since all of the initial ``PE`` was converted to ``KE``, then ``ΔE`` must be equal to ``ΔKE``.
+
+That brings us to:
+
+.. math:: W = ΔE
+
+.. math:: (mg)(h)(cos(0)) = (1/2)m(Vf)^2 - (1/2)m(V0)^2
+
+Lets break this down:
+
+ - ``m`` = mass of the ball
+ - ``g`` = gravitational constant (9.81 near Earth's surface, but sometimes we just go with 10 because its easier to work with, which may be beneficial if accuracy is not extremely important in your game).
+ - ``0`` = the angle relative to the direction of the ball's motion. In this case, it is in the same direction.
+
+ - ``Vf`` = The final velocity of the ball
+ - ``V0`` = The initial velocity of the ball
+
+Because mass is in all of our terms above, then mass can simply be removed (it will have no effect on the final answer).
+
+.. math:: (g)(h)(1) = (1/2)(Vf)^2 - (1/2)(V0)^2
+
+We know that the initial ``KE`` was ``0 J``.
+
+.. math:: gh = (1/2)(Vf)^2
+
+.. math:: (9.81)(2) = (1/2)(Vf)^2
+
+.. math:: Vf = 6.264 m/s
+
+The ball is travelling at ``6.264 m/s`` at the instant before it touches the ground.
+
+Note that if we did not set the ground as our reference point, then the ball would still have some ``PE`` at the end of the scenario, and the ball would have the same amount of final ``KE`` and the same final velocity. The ball would have started out with more gravitational potential energy. What mattered here was how much the ``PE`` changed, which was the amount ``KE`` changed in this scenario.
+
+By making the ground be our reference point, we are making the problem much easier to think about (and much easier to solve in some cases).
+
+Conservation of energy
+======================
+
+Energy must be conserved within a *closed* system. A system is essentially a collection of objects. In a closed system, all forces that do work on an object within a system must originate within the system.
+
+Recall the ball we dropped earlier. If we want to have a closed system, then the ball and the Earth must be iin the same system. If the Earth were not included in the system, then the ball would not have started out without any potential energy from the Earth, and the Earth would have added energy (KE in this case) to the ball system as it accelerated the ball downwards. This would be and *open* system.
+
+Non-conservative forces
+=======================
+
+There are forces that can remove energy from a system, thereby making the system *open*. Friction is a non-conservative force. Lets start with an example:
+
+A block is sliding on a rough surface (a surface with friction). Eventually the block will stop. But where did that block's ``KE`` go? As the friction did work on the block as the block slid, it transferred the ``KE`` to non-mechanical forms of energy, like sound and heat energy.
+
